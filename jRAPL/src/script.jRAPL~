@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#Execute ./script.jRAPL
+
+execute_1="$(java EnergyCheckUtils 0 results_1.txt &)"
+eval=$execute_1
+sleep 5
+
+execute_2="$(java EnergyCheckUtils 0 results_2_1.txt & java EnergyCheckUtils 0 results_2_2.txt &)"
+eval=$execute_2
+sleep 5
+
+execute_3="$(java EnergyCheckUtils 0 results_3_1.txt & java EnergyCheckUtils 0 results_3_2.txt & java EnergyCheckUtils 0 results_3_3.txt &)"
+eval=$execute_3
+sleep 5
+
+execute_4="$(java EnergyCheckUtils 0 results_4_1.txt & java EnergyCheckUtils 0 results_4_2.txt & java EnergyCheckUtils 0 results_4_3.txt & java EnergyCheckUtils 0 results_4_4.txt &)"
+eval=$execute_4
+sleep 5
+
+execute_5="$(java EnergyCheckUtils 0 results_5_1.txt & java EnergyCheckUtils 0 results_5_2.txt & java EnergyCheckUtils 0 results_5_3.txt & java EnergyCheckUtils 0 results_5_4.txt & java EnergyCheckUtils 0 results_5_5.txt &)"
+eval=$execute_5
+sleep 5
+
+execute_6="$(java EnergyCheckUtils 0 results_6_1.txt & java EnergyCheckUtils 0 results_6_2.txt & java EnergyCheckUtils 0 results_6_3.txt & java EnergyCheckUtils 0 results_6_4.txt & java EnergyCheckUtils 0 results_6_5.txt & java EnergyCheckUtils 0 results_6_6.txt &)"
+eval=$execute_6
+sleep 5
+
+execute_7="$(java EnergyCheckUtils 0 results_7_1.txt & java EnergyCheckUtils 0 results_7_2.txt & java EnergyCheckUtils 0 results_7_3.txt & java EnergyCheckUtils 0 results_7_4.txt & java EnergyCheckUtils 0 results_7_5.txt & java EnergyCheckUtils 0 results_7_6.txt & java EnergyCheckUtils 0 results_7_7.txt &)"
+eval=$execute_7
+sleep 5
+
+execute_8="$(java EnergyCheckUtils 0 results_8_1.txt & java EnergyCheckUtils 0 results_8_2.txt & java EnergyCheckUtils 0 results_8_3.txt & java EnergyCheckUtils 0 results_8_4.txt & java EnergyCheckUtils 0 results_8_5.txt & java EnergyCheckUtils 0 results_8_6.txt & java EnergyCheckUtils 0 results_8_7.txt & java EnergyCheckUtils 0 results_8_8.txt &)"
+eval=$execute_8
+sleep 5

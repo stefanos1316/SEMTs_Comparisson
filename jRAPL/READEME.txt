@@ -1,0 +1,33 @@
+Source Code of ECO-Smells detector
+==================================
+
+GENERAL
+-------
+ The aim of this application, is to measure energy consumption of software, before and after applying Energy Code Smells.
+ We measure the energy consumption of an application using jRAPL, an energy profiling framework running on CPUs using
+ Running Average Power Limit (RAPL) support. RAPL uses a low-level set of interfaces (i.e. power capping framework) 
+ in order to get data for power consumption on different hardware componenets. Power capping framework, a consistent 
+ interface between kernel and user space. Thus, RAPL can retrive power capping drivers to expose the settings
+ to the user space via sysfs.
+ 
+ Link for RAPL: https://01.org/rapl-power-meter
+ Link for jRAPL: http://kliu20.github.io/jRAPL/
+
+
+REQUIREMENTS
+------------
+ Chip level power management supports Intel architectures such as CEAN server-level CPU and the series of i5 and i7.
+ jRAPL runs on architectures such as: Sandy Bridge, Sandy Bridge_ep (server) and Ivy Bridge.
+ From the abovementioned architectures it does support different components that are enlisted below:
+	- Sandy Bridge/Ivy Bridge: CPU(core and uncore),GPU, and package support
+	- Snady Bridge_ep: CPU(core and uncore),DRAM, and package support
+
+  Note: Keep in mind that those are second generation Inter Architecture.  
+
+
+PARAMETERS
+----------
+ arg1 = Energy Code Smell name, i.e., LoopBug, DeadCode, InLineMethod, MovingTooMuchData, ImmortalityBug, RedundantStorage.
+ arg2 = Flag where 0 is the code without the optimization and 1 with.
+ arg3 = The numbers for the "InLineMethod" Energy Smell.
+

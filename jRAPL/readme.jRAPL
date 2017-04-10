@@ -1,0 +1,9 @@
+In order to run jRAPL and monitor a benchmarks energy consumption, one has to 
+run the script using the following way: $ ./runBenchmark $1 $2
+
+jRAPL executes EnergyCheckUtils in retrives energy measurements though it,
+in order to compile and run EnergyCheckUtils jdk1.8 is required.
+
+Note: Some applications from SPECjvm2008 benchmark suite may not run by using
+jdk1.8!
+
