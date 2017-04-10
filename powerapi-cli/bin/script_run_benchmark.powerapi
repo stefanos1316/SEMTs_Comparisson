@@ -1,0 +1,7 @@
+#!/bin/bash
+
+run_java="$(java -jar stressCPU.jar "$1")"
+echo "Executing Java using "$1" thread!"
+eval=$run_java
+
+exit
