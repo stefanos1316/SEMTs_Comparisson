@@ -1,0 +1,55 @@
+#!/bin/bash
+
+#This script will execute all the 8 test cases in order to retrieve measurements from Jalen SEMT
+# $1 -> log dir path
+
+#Execute ./script.jRAPL
+
+logDirDate="$(date -u | sed -e 's/ /_/g')" 
+logDirName=$1/Jalen_ALL_LOG_FILES$logDirDate
+createDir="$(mkdir -p $logDirName)"
+eval=$createDir
+
+
+execute_1="$(java -javaagent:jalen-2.jar -jar stressCPU.jar 1)"
+eval=$execute_1
+mv *.csv result_1.txt
+sleep 5
+
+execute_2="$(java -javaagent:jalen-2.jar -jar stressCPU.jar 2)"
+eval=$execute_2
+mv *.csv result_2.txt
+sleep 5
+
+execute_3="$(java -javaagent:jalen-2.jar -jar stressCPU.jar 3)"
+eval=$execute_3
+mv *.csv result_3.txt
+sleep 5
+
+execute_4="$(java -javaagent:jalen-2.jar -jar stressCPU.jar 4)"
+eval=$execute_4
+mv *.csv result_4.txt
+sleep 5
+
+execute_5="$(java -javaagent:jalen-2.jar -jar stressCPU.jar 5)"
+eval=$execute_5
+mv *.csv result_5.txt
+sleep 5
+
+execute_6="$(java -javaagent:jalen-2.jar -jar stressCPU.jar 6)"
+eval=$execute_6
+mv *.csv result_6.txt
+sleep 5
+
+execute_7="$(java -javaagent:jalen-2.jar -jar stressCPU.jar 7)"
+eval=$execute_7
+mv *.csv result_7.txt
+sleep 5
+
+execute_8="$(java -javaagent:jalen-2.jar -jar stressCPU.jar 8)"
+eval=$execute_8
+mv *.csv result_8.txt
+
+mv result_*.txt $logDirName
+echo "Done!!!"
+exit
