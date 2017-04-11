@@ -44,7 +44,7 @@ public class EnergyCheckUtils {
 		//System.loadLibrary("CPUScaler");
 	
 		//Modification added by Stefanos Georgiou
-		System.load("/home/stefanos/GitHub/Comparing_SEMTs/jRAPL/src/libCPUScaler.so");
+		System.load("/home/sgeorgiou/GitHub/SEMTs_Comparisson/jRAPL/src/libCPUScaler.so");
 		wraparoundValue = ProfileInit();
 		socketNum = GetSocketNum();
 	}
