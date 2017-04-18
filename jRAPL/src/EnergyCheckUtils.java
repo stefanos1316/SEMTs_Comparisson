@@ -96,7 +96,7 @@ public class EnergyCheckUtils {
 
 		//Process proc = Runtime.getRuntime().exec("java -jar SPECjvm2008.jar -ikv -ict "+args[0]);
 	    	//proc.waitFor();
-		final int NUM_TESTS = 1000;
+		final int NUM_TESTS = 500;
 	    	long start = System.nanoTime();
 	   	// Thread[] thread = new Thread[8];
 	    	for (int i = 0; i < NUM_TESTS; i++) {
@@ -110,7 +110,7 @@ public class EnergyCheckUtils {
 	        	}).start();
 	        	}*/
 	    	}
-		
+	
 		double[] after = getEnergyStats();
 		long end_time = System.currentTimeMillis();
 

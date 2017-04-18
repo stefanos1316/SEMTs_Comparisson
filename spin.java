@@ -1,4 +1,4 @@
-package stressCPU;
+//package stressCPU;
 
 public class spin {
 
@@ -15,15 +15,15 @@ public class spin {
 	    long start = System.nanoTime();
 	   // Thread[] thread = new Thread[8];
 	    for (int i = 0; i < NUM_TESTS; i++) {
-	        for (int j = 0; j < 8; ++j) 
-	        {
-	        	new Thread(new Runnable() {
-	        	     public void run() {
+	      //  for (int j = 0; j < 8; ++j) 
+	       // {
+	        //	new Thread(new Runnable() {
+	        //	     public void run() {
 	        	          // code goes here.
 	        	    	 spinner(500);
-	        	     }
-	        	}).start();
-	        }
+	        //	     }
+	        //	}).start();
+	       // }
 	    }
 	    System.out.println("Took " + (System.nanoTime()-start)/1000000 +
 	        "ms (expected " + (NUM_TESTS*500) + ")");
