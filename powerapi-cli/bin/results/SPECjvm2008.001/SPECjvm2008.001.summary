@@ -1,0 +1,10 @@
+Report:      SPECjvm2008 Base summary
+Result:      Composite result: 103.14 SPECjvm2008 Base ops/m
+HW Model:    n/a, n/a
+HW CPU:      n/a, n/a
+OS:          Linux
+JVM:         Oracle Corporation, Java HotSpot(TM) Server VM, 24.79-b02 mixed mode
+JVM tuning:  n/a
+JVM startup:  
+Tester:      root, n/a
+Run date:    Wed Apr 27 11:09:30 EEST 2016

@@ -1,0 +1,1 @@
+java -jar CPU_Scalable_Load_10sec_Delday.jar 1 1 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 1 1 0.5 5 power_1.txt

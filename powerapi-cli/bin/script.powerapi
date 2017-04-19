@@ -6,93 +6,134 @@
 # $1 -> /full/path/for/log/directory
 # $2 -> benchmark applications (e.g., compiler.compiler), on null argument all benchmark's applications will run
 
+duration=$(( $5 * 110 ))
+
+getPID="$(pgrep java | awk -F ' ' '{print $NF}')"
+
+launch_all_and_measure="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $getPID --agg max --console duration $duration >> $6)"
+eval=$launch_all_and_measure
+wait $(jobs -p)
+exit
+#sleep 300
+
+#launch_all_and_measure_2="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $getPID --agg max --console duration $duration >> power_1.txt)"
+#eval=$launch_all_and_measure_2
+#wait $(jobs -p)
+#sleep 300
+
+#launch_all_and_measur_3e="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $getPID --agg max --console duration $duration >> power_1.txt)"
+#eval=$launch_all_and_measure_3
+#wait $(jobs -p)
+#sleep 300
+
+#launch_all_and_measure_4="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $getPID --agg max --console duration $duration >> power_1.txt)"
+#eval=$launch_all_and_measure_4
+#wait $(jobs -p)
+#sleep 300
+
+#launch_all_and_measure_5="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $getPID --agg max --console duration $duration >> power_1.txt)"
+#eval=$launch_all_and_measure_5
+#wait $(jobs -p)
+#sleep 300
+
+#launch_all_and_measure_6="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $getPID --agg max --console duration $duration >> power_1.txt)"
+#eval=$launch_all_and_measure_6
+#wait $(jobs -p)
+#sleep 300
+
+#launch_all_and_measure_7="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $getPID --agg max --console duration $duration >> power_1.txt)"
+#eval=$launch_all_and_measure_7
+3wait $(jobs -p)
+
+##############################################################################################################################################################
 #launch benchmark 1
-./script_run_benchmark.powerapi $2 &
+./script_run_benchmark.powerapi 1 &
 sleep 1
 retrieve_process_ID_1="$(pgrep java | awk -F' ' '{print $NF}')"
 echo $retrieve_process_ID_1 &
 sleep 1
-launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_1 --agg max --console duration 500 >> power_1.txt)"
+launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_1 --agg max --console duration 540 >> power_1.txt)"
 eval=$launch_PowerAPI & 
 wait $(jobs -p)
-exit
+#exit
+sleep 300
 
 #launch benchmark 2
-./script_run_benchmark.powerapi $2 &
+./script_run_benchmark.powerapi 2 &
 sleep 1
 retrieve_process_ID_2="$(pgrep java | awk -F' ' '{print $NF}')"
 echo $retrieve_process_ID_2 &
 sleep 1
-launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_2 --agg max --console duration 420 >> power_2.txt)"
+launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_2 --agg max --console duration 540 >> power_2.txt)"
 eval=$launch_PowerAPI &
 wait $(jobs -p)
-
+sleep 300
 
 #launch benchmark 3
-./script_run_benchmark.powerapi $2 &
+./script_run_benchmark.powerapi 3 &
 sleep 1
 retrieve_process_ID_3="$(pgrep java | awk -F' ' '{print $NF}')"
 echo $retrieve_process_ID_3 &
 sleep 1
-launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_3 --agg max --console duration 420 >> power_3.txt)"
+launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_3 --agg max --console duration 540 >> power_3.txt)"
 eval=$launch_PowerAPI &
 wait $(jobs -p)
-
+sleep 300
 
 #launch benchmark 4
-./script_run_benchmark.powerapi $2 &
+./script_run_benchmark.powerapi 4 &
 sleep 1
 retrieve_process_ID_4="$(pgrep java | awk -F' ' '{print $NF}')"
 echo $retrieve_process_ID_4 &
 sleep 1
-launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_4 --agg max --console duration 420 >> power_4.txt)"
+launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_4 --agg max --console duration 540 >> power_4.txt)"
 eval=$launch_PowerAPI &
 wait $(jobs -p)
-
+sleep 300
 
 #launch benchmark 5
-./script_run_benchmark.powerapi $2 &
+./script_run_benchmark.powerapi 5 &
 sleep 1
 retrieve_process_ID_5="$(pgrep java | awk -F' ' '{print $NF}')"
 echo $retrieve_process_ID_5 &
 sleep 1
-launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_5 --agg max --console duration 420 >> power_5.txt)"
+launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_5 --agg max --console duration 540 >> power_5.txt)"
 eval=$launch_PowerAPI &
 wait $(jobs -p)
-
+sleep 300
 
 #launch benchmark 6
-./script_run_benchmark.powerapi $2 &
+./script_run_benchmark.powerapi 6 &
 sleep 1
 retrieve_process_ID_6="$(pgrep java | awk -F' ' '{print $NF}')"
 echo $retrieve_process_ID_6 &
 sleep 1
-launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_6 --agg max --console duration 420 >> power_6.txt)"
+launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_6 --agg max --console duration 540 >> power_6.txt)"
 eval=$launch_PowerAPI &
 wait $(jobs -p)
-
+sleep 300
 
 #launch benchmark 7
-./script_run_benchmark.powerapi $2 &
+./script_run_benchmark.powerapi 7 &
 sleep 1
 retrieve_process_ID_7="$(pgrep java | awk -F' ' '{print $NF}')"
 echo $retrieve_process_ID_7 &
 sleep 1
-launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_7 --agg max --console duration 420 >> power_7.txt)"
+launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_7 --agg max --console duration 540 >> power_7.txt)"
 eval=$launch_PowerAPI &
 wait $(jobs -p)
-
+sleep 300
 
 #launch benchmark 8
-./script_run_benchmark.powerapi $2 &
+./script_run_benchmark.powerapi 8 &
 sleep 1
 retrieve_process_ID_8="$(pgrep java | awk -F' ' '{print $NF}')"
 echo $retrieve_process_ID_8 &
 sleep 1
-launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_8 --agg max --console duration 420 >> power_8.txt)"
+launch_PowerAPI="$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID_8 --agg max --console duration 540 >> power_8.txt)"
 eval=$launch_PowerAPI &
 wait $(jobs -p)
-
+sleep 300
 
 #launch benchmark 9
 #./script_run_benchmark.powerapi $2 &

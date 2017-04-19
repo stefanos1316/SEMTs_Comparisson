@@ -9,10 +9,10 @@ public class Load {
         if ( args.length < 4 ) {
                 System.out.println("Error: Invalid number of command line arguments");
 		System.out.println("Enter the following parameters in order to execute:");
-		System.out.println("$1 -> Number of Cores (Physical)");
-		System.out.println("$2 -> Number of threads per Core");
-		System.out.println("$3 -> Load per logical core (e.g., 1 for full, 0.5 for half)");
-		System.out.println("$4 -> Duration (give interger for minutes)");
+		System.out.println("$3 -> Number of Cores (Physical)");
+		System.out.println("$4 -> Number of threads per Core");
+		System.out.println("$5 -> Load per logical core (e.g., 1 for full, 0.5 for half)");
+		System.out.println("$6 -> Duration (give interger for minutes)");
 		System.exit(1);
         }
 

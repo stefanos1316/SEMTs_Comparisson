@@ -90,26 +90,47 @@ public class EnergyCheckUtils {
 
 	public static void main(String[] args) throws NumberFormatException, IOException,NoSuchMethodException, SecurityException, IllegalAccessException, InvocationTargetException, InterruptedException{	
 	
+		//Added from Stefanos
+		if ( args.length < 4 ) {
+                	System.out.println("Error: Invalid number of command line arguments");
+			System.out.println("Enter the following parameters in order to execute:");
+			System.out.println("$3 -> Number of Cores (Physical)");
+			System.out.println("$4 -> Number of threads per Core");
+			System.out.println("$5 -> Load per logical core (e.g., 1 for full, 0.5 for half)");
+			System.out.println("$6 -> Duration (give interger for minutes)");
+			System.exit(1);
+        	}
+
+		int numCore = Integer.parseInt(args[2]);
+      	  	int numThreadsPerCore = Integer.parseInt(args[3]);
+        	double load = Double.parseDouble(args[4]);
+     	   	final long duration = 100000 * Integer.parseInt(args[5]);
+
 		PrintWriter writer = new PrintWriter(args[1],"UTF-8");
 		long start_time = System.currentTimeMillis();
 		double[] before = getEnergyStats();
 
 		//Process proc = Runtime.getRuntime().exec("java -jar SPECjvm2008.jar -ikv -ict "+args[0]);
 	    	//proc.waitFor();
-		final int NUM_TESTS = 500;
-	    	long start = System.nanoTime();
-	   	// Thread[] thread = new Thread[8];
-	    	for (int i = 0; i < NUM_TESTS; i++) {
-	        	/*for (int j = 0; j < 8; ++j) 
-	        	{
-	        	new Thread(new Runnable() {
-	        	     public void run() {
-	        	          // code goes here.*/
-	        	    	 spinner(500);
-	        	   /*  }
-	        	}).start();
-	        	}*/
-	    	}
+		
+	
+
+        	/*for (int thread = 0; thread < numCore * numThreadsPerCore; thread++) {
+            		new BusyThread("Thread" + thread, load, duration).start();
+        	}*/
+		long startTime = System.currentTimeMillis();
+            	try {
+                // Loop for the given duration
+                while (System.currentTimeMillis() - startTime < duration) {
+                    // Every 100ms, sleep for the percentage of unladen time
+                    if (System.currentTimeMillis() % 100 == 0) {
+                        Thread.sleep((long) Math.floor((1 - load) * 100));
+                    	}
+                	}
+           	 } catch (InterruptedException e) {
+                e.printStackTrace();
+            	}
+
 	
 		double[] after = getEnergyStats();
 		long end_time = System.currentTimeMillis();
@@ -176,11 +197,42 @@ public class EnergyCheckUtils {
         writeToPlotdData.close();   	
     }
  
-  //Added from Stefanos
- 	private static void spinner(int milliseconds){
-			long sleepTime = milliseconds*1000000L; // convert to nanoseconds
-			    long startTime = System.nanoTime();
-			    while ((System.nanoTime() - startTime) < sleepTime) {}
-			}
+
+
+	private static class BusyThread extends Thread {
+        private double load;
+        private long duration;
+
+        /**
+         * Constructor which creates the thread
+         * @param name Name of this thread
+         * @param load Load % that this thread should generate
+         * @param duration Duration that this thread should generate the load for
+         */
+        public BusyThread(String name, double load, long duration) {
+            super(name);
+            this.load = load;
+            this.duration = duration;
+        }
+
+        /**
+         * Generates the load when run
+         */
+        @Override
+        public void run() {
+            long startTime = System.currentTimeMillis();
+            try {
+                // Loop for the given duration
+                while (System.currentTimeMillis() - startTime < duration) {
+                    // Every 100ms, sleep for the percentage of unladen time
+                    if (System.currentTimeMillis() % 100 == 0) {
+                        Thread.sleep((long) Math.floor((1 - load) * 100));
+                    }
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     
 }

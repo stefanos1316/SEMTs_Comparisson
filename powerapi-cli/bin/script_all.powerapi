@@ -1,0 +1,55 @@
+#!/bin/bash
+
+run="$(java -jar CPU_Scalable_Load_10sec_Delday.jar 1 1 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 1 1 0.5 5 power_1.txt
+)"
+eval=$run
+sleep 300 
+
+run_2="$(java -jar CPU_Scalable_Load_10sec_Delday.jar 1 2 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 1 2 0.5 5 power_2.txt
+)"
+eval=$run_2
+sleep 300 
+
+run_3="$(java -jar CPU_Scalable_Load_10sec_Delday.jar 2 1 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 2 1 0.5 5 power_3.txt
+)"
+eval=$run_3
+sleep 300 
+
+run_4="$(java -jar CPU_Scalable_Load_10sec_Delday.jar 2 2 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 2 2 0.5 5 power_4.txt
+)"
+eval=$run_4
+sleep 300 
+
+run_5="$(java -jar CPU_Scalable_Load_10sec_Delday.jar 3 1 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 3 1 0.5 5 power_5.txt
+)"
+eval=$run_5
+sleep 300 
+
+run_6="$(java -jar CPU_Scalable_Load_10sec_Delday.jar 3 2 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 3 2 0.5 5 power_6.txt
+)"
+eval=$run_6
+sleep 300 
+
+run_7="$(java -jar CPU_Scalable_Load_10sec_Delday.jar 4 1 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 4 1 0.5 5 power_7.txt
+)"
+eval=$run_7
+sleep 300 
+
+run_8="$(java -jar CPU_Scalable_Load_10sec_Delday.jar 4 2 0.5 5 & ./script.powerapi /home/sgeorgiou/GitHub/SEMTs_Comparisson/powerapi-cli/bin/ 4 2 0.5 5 power_8.txt
+)"
+eval=$run_8
+
+
+#Create and move all files create in the $3 full path
+testResults="$(date -u | sed -e 's/ /_/g')"
+testResultsDirName=$1/POWERAPI_ALL_LOG_FILES_$testResults
+testResultsDirCreate="$(mkdir -p $testResultsDirName)"
+eval=$testResultsDirCreate
+echo "Log Directory $testResultsDirName is created"
+
+#Move all data starting from *.txt (created from jalen on execution)
+moveThem="$(mv *.txt $testResultsDirName)"
+echo "All *.text files move to "$testResultsDirName
+
+
+exit
