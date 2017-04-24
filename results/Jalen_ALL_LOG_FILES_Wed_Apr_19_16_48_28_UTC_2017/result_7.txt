@@ -1,0 +1,7 @@
+java.lang.Object.wait;5.394881883691161E-4;0.0
+Load$BusyThread.run;498.530351567199;0.0
+java.lang.ref.ReferenceQueue.remove;0.0011498013988155596;0.0
+java.lang.System.currentTimeMillis;0.0;0.0
+java.lang.Thread.dumpThreads;6.469716996642782;0.0
+java.lang.Thread.sleep;2.8627273476732316;0.0
+java.lang.ref.ReferenceQueue.enqueue;5.401792812105918E-4;0.0
