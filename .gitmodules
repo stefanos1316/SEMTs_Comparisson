@@ -4,3 +4,6 @@
 [submodule "jolinar"]
 	path = jolinar
 	url = https://github.com/adelnoureddine/jolinar.git
+[submodule "uarch-configure"]
+	path = uarch-configure
+	url = https://github.com/deater/uarch-configure
