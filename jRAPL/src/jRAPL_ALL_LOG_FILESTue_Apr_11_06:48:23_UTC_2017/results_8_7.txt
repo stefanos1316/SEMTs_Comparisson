@@ -1,1 +1,0 @@
-Power consumption of dram: 0.0 power consumption of cpu: 13393.222611000005 joules, power consumption of package: 15289.721312999998 joules

@@ -27,6 +27,7 @@ public class spin {
 	    }
 	    System.out.println("Took " + (System.nanoTime()-start)/1000000 +
 	        "ms (expected " + (NUM_TESTS*500) + ")");
+		System.exit(1);
 	}
 
 }
