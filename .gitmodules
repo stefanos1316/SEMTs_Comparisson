@@ -7,3 +7,9 @@
 [submodule "uarch-configure"]
 	path = uarch-configure
 	url = https://github.com/deater/uarch-configure
+[submodule "applications/Benchmarking-Sorting-Algorithms"]
+	path = applications/Benchmarking-Sorting-Algorithms
+	url = https://github.com/arisath/Benchmarking-Sorting-Algorithms.git
+[submodule "jRAPL"]
+	path = jRAPL
+	url = https://github.com/kliu20/jRAPL.git
