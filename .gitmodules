@@ -1,0 +1,6 @@
+[submodule "jalen"]
+	path = jalen
+	url = https://github.com/adelnoureddine/jalen.git
+[submodule "jolinar"]
+	path = jolinar
+	url = https://github.com/adelnoureddine/jolinar.git
