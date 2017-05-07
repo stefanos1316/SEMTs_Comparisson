@@ -28,18 +28,18 @@ otherCommandLineArguments=$(echo ${@:3} | tr ' ' '_')
 #exit
 
 #Creating new Directory for the log files
-jalenLogDirDate="$(date -u | sed -e 's/ /_/g')" 
-jalenLogDirName=$2/"Jalen_ALL_LOG_FILES_"$jalenLogDirDate"_application_"$applicationsName"_arguments_"$otherCommandLineArguments
-jalenLogDirCreate="$(mkdir -p $jalenLogDirName)"
-eval=$jalenLogDirCreate
-echo "Log Directory $jalenLogDirName is created"
+powerAPILogDirDate="$(date -u | sed -e 's/ /_/g')" 
+powerAPILogDirName=$2/"PowerAPI_ALL_LOG_FILES_"$powerAPILogDirDate"_application_"$applicationsName"_arguments_"$otherCommandLineArguments
+powerAPILogDirCreate="$(mkdir -p $powerAPILogDirName)"
+eval=$powerAPILogDirCreate
+echo "Log Directory $powerAPILogDirName is created"
 
 #Exexcute task and retrieve measurements
-executeTasks=$(java -javaagent:jalen-2.jar -jar $1 ${@:3})
+executeTasks=$(java -javaagent:powerAPI-2.jar -jar $1 ${@:3})
 eval=$executeTasks
-echo "Done exeuting script all resutls can be found in $jalenLogDirName"
+echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 
 #Move all the collected results in the proposer file
-mv *.csv $jalenLogDirName
+mv *.csv $powerAPILogDirName
 
 echo "Exiting..."

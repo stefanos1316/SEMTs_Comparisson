@@ -1,5 +1,0 @@
-java.lang.Object.wait;0.002623281241571686;0.0
-Load$BusyThread.run;446.8521780401209;0.0
-java.lang.Thread.dumpThreads;5.752387544408033;0.0
-java.lang.Thread.sleep;2.1704626305866026;0.0
-java.lang.StrictMath.floor;0.0;0.0
