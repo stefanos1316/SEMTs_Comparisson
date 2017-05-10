@@ -1,2 +1,14 @@
-#Check the script on you old laptop, it has a scritp that uses rapl-plot to retrieve power consumption measurements.
+#!/bin/bash
 
+while true 
+do
+	if ps -p $1  > /dev/null
+	then
+		eval=$(./rapl-plot >> resultsFromRapl_Plot.txt)
+	else
+		break
+	fi
+done
+
+echo "Results collected, exiting"
+exit
