@@ -20,12 +20,16 @@ if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
 
 fi
 
-applicationsName=$(echo $2 | awk -F "/" '{print $NF}')
+#Drive to power-cli directory
+cd ../powerapi-cli/bin/
+
+applicationsName=$(echo $1 | awk -F "/" '{print $NF}' | awk -F "." '{print $1}')
+
 otherCommandLineArguments=$(echo ${@:3} | tr ' ' '_')
 
 #echo $applicationsName
 #echo $otherCommandLineArguments
-#exit
+
 
 #Creating new Directory for the log files
 powerAPILogDirDate="$(date -u | sed -e 's/ /_/g')" 
@@ -34,12 +38,29 @@ powerAPILogDirCreate="$(mkdir -p $powerAPILogDirName)"
 eval=$powerAPILogDirCreate
 echo "Log Directory $powerAPILogDirName is created"
 
+#Initially we will execute the jar without measuring it since powerAPI requires durations to capture measurements
+#This will help us to determine the duration and set it as a parameter to our script.
+
+
+#######################################################################################################
+#						TODO						      #
+#######################################################################################################
+echo "Receiving durations for $1 applications"
+StartTime=$(date +"%s")
+eval=$(java -jar $1 ${@:3})
+EndTime=$(date +"%s") 
+ElapsedTime=$((${EndTime}-${StartTime}))
+
 #Exexcute task and retrieve measurements
-executeTasks=$(java -javaagent:powerAPI-2.jar -jar $1 ${@:3})
-eval=$executeTasks
+
+retrieve_process_ID="$(pgrep java | awk -F' ' '{print $NF}')" 
+launch_PowerAPI=$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID --agg max --console duration $ElapsedTime >> power_for_$applicationsName.txt)
+eval=$(java -jar $1 ${@:3} ; sleep 1 ; $retrieve_process_ID ; $launch_PowerAPI) 
+
+wait $(jobs -p)
 echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 
 #Move all the collected results in the proposer file
-mv *.csv $powerAPILogDirName
+mv power_for_$applicationsName.txt $powerAPILogDirName
 
 echo "Exiting..."

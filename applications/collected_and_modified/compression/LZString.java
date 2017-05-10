@@ -738,10 +738,10 @@ public class LZString {
 
     System.out.println("Decompressed: " + decompressed);
     
-    System.out.println("Done!!!");
-    System.exit(1);
+    //System.out.println("Done!!!");
+    //System.exit(1);
     //UTF-16 Compression and Decompression
-    /*
+    
     String testUTF16 = "Lets see how much we can compress this string!";
 
     String outputUTF16 = LZString.compressToUTF16(testUTF16);
@@ -760,7 +760,9 @@ public class LZString {
 
     String decompressedBase64 = LZString.decompressFromBase64(outputBase64);
 
-    System.out.println("Decompressed: " + decompressedBase64);*/
+    System.out.println("Decompressed: " + decompressedBase64);
+
+    System.exit(1);
   }
 }
 

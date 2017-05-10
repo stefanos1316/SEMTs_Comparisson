@@ -1,0 +1,4 @@
+BenchmarkingSortingAlgorithms.insertionSort;178.04148631796264;0.0
+java.lang.Thread.dumpThreads;1.5403457416101358;0.0
+BenchmarkingSortingAlgorithms.createArrayWithRandomInts;0.0;0.0
+java.util.Random.nextDouble;0.0;0.0

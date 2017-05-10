@@ -1,0 +1,5 @@
+BenchmarkingSortingAlgorithms.selectionSort;560.6187563696359;0.0
+java.lang.Object.wait;2.445008140109052E-4;0.0
+BenchmarkingSortingAlgorithms.createArrayWithRandomInts;0.0;0.0
+java.lang.Thread.dumpThreads;3.5585019434224674;0.0
+java.util.Random.nextDouble;0.0;0.0
