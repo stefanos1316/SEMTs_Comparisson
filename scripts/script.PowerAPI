@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #This script will execute and measure applications located inside this repo.
 
 #Command-line parameters
@@ -53,10 +52,27 @@ ElapsedTime=$((${EndTime}-${StartTime}))
 
 #Exexcute task and retrieve measurements
 
-retrieve_process_ID="$(pgrep java | awk -F' ' '{print $NF}')" 
-launch_PowerAPI=$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $retrieve_process_ID --agg max --console duration $ElapsedTime >> power_for_$applicationsName.txt)
-eval=$(java -jar $1 ${@:3} ; sleep 1 ; $retrieve_process_ID ; $launch_PowerAPI) 
+function getProcessID {
+pgrep java | awk '{print $NF}' 
+}
 
+function callJava {
+eval=$(java -jar $1 ${@:3} &)
+}
+
+function callPowerAPI { 
+./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $(getProcessID) --agg max --console duration $(($ElapsedTime + 1))>> power_for_$applicationsName.txt
+}
+
+#retrieve_process_ID="$(pgrep java | awk -F' ' '{print $NF}')" 
+#launch_PowerAPI=$(./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $? --agg max --console duration $ElapsedTime >> power_for_$applicationsName.txt)
+#eval=$(java -jar $1 ${@:3} ; sleep 1 ; $retrieve_process_ID ; $launch_PowerAPI) 
+
+
+#callJava 
+eval=$(java -jar $1 ${@:3}) &
+echo "$(getProcessID)"
+callPowerAPI
 wait $(jobs -p)
 echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 

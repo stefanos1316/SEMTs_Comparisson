@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#This script is responsible to add part of code to measure the energy consumption
+#between the values double[] before = getEnergyStats(); and double[] after = getEnergyStats(); 
+
+#Check if the command line parameters are given
+if [ "$#" -lt 2 ]; then
+	echo "Illegal number of parameters"
+	exit
+fi
+
+if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
+	echo "\$1 -> .java file to add in EnergyCheckUtils source code"
+	echo "\$2 -> Path for the EnergyCheckUtils .java file"
+	exit
+fi
+
+#First, in order to identify the main class in the source code and we will start to read after the main
+numberOfRightCurlyBrackets=0

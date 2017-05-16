@@ -1,14 +1,58 @@
 #!/bin/bash
 
+#This script will execute and measure applications located inside this repo.
+
+#Command-line parameters
+#$1 -> Application's jar path for execution
+#$2 -> Log files locations (full paht needed)
+#$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)
+
+
+if [ "$#" -lt 2 ]; then
+        echo "Illegal number of paramters"
+fi
+
+if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
+        echo "$1 -> Application's jar path for execution"
+        echo "$2 -> Log files locations (we suggest to use the 'results' directory found in our repository)"
+        echo "$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)"
+
+fi
+
+applicationsName=$(echo $1 | awk -F "/" '{print $NF}' | awk -F "." '{print $1}')
+
+otherCommandLineArguments=$(echo ${@:3} | tr ' ' '_')
+
+#echo $applicationsName
+#echo $otherCommandLineArguments
+
+
+#Creating new Directory for the log files
+raplLogDirDate="$(date -u | sed -e 's/ /_/g')"
+raplLogDirName=$2/"RAPL_ALL_LOG_FILES_"$raplLogDirDate"_application_"$applicationsName"_arguments_"$otherCommandLineArguments
+raplLogDirCreate="$(mkdir -p $raplLogDirName)"
+eval=$raplLogDirCreate
+echo "Log Directory $raplLogDirName is created"
+
+#Executing application and retrieving measurements
+function getProcessID {
+pgrep java | awk '{print $NF}'
+}
+
+eval=$(java -jar $1 ${@:3} &) 
+
 while true 
 do
-	if ps -p $1  > /dev/null
+	if ps -p $(getProcessID)  > /dev/null
 	then
-		eval=$(./rapl-plot >> resultsFromRapl_Plot.txt)
+		eval=$(./../uarch-configure/rapl-read/rapl-plot >> resultsFromRapl_Plot.txt)
 	else
 		break
 	fi
 done
 
 echo "Results collected, exiting"
+mv resultsFromRapl_Plot.txt $raplLogDirName
+
+#move results int 
 exit
