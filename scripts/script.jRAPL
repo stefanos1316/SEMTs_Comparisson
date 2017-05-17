@@ -7,7 +7,7 @@
 #$1 -> full path of the .java file
 #$2 -> full path of the EnergyCheckUtils.java file where the merging will happen
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -lt 2 ]; then
 	echo "Illegal number of parameters"
 fi
 
@@ -24,18 +24,18 @@ javac removeSourceCode.java
 
 java addSourceCode $1 $2
 
+#Cp the EnergyCheckUtils in jRAPL
+cp EnergyCheckUtils.java ../jRAPL
+
+
 #After applying the change compile EnergyChcekUtils.java
-javac $2
-getDirectoryPath=$(echo $2 | awk -F "/" '{$NF="";print}' | tr ' ' '/')
-getExecutable=$(echo $2 | awk -F "." '{print $1}' | awk -F "/" '{print $NF}')
-
-#Now send send executable in jRAPL dircetory found in the parent directory and execute it there
-mv $getExecutable ../jRAPL/.
-
-java -classpath ../jRAPL/ $getExecutable
-
-exit
-#java removeSourceCode $2
+javac ../jRAPL/EnergyCheckUtils.java
+#getDirectoryPath=$(echo $2 | awk -F "/" '{$NF="";print}' | tr ' ' '/')
+#getExecutable=$(echo $2 | awk -F "." '{print $1}' |  awk -F "/" '{print $NF}')
+cd ../jRAPL/
+java EnergyCheckUtils ${@:3}
+cd ../scripts/
+java removeSourceCode $2
 
 echo "Files mainCodeBlock.txt and functionsCodeBlock.txt created under the scripts directory"
 echo "Incorporating them files in $2"
