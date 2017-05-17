@@ -88,29 +88,75 @@ public class addSourceCode {
 
 	// Function to get the remaining functions and add them in the
 	// EnergyCheckUtils
-	public static void getRemaining(ArrayList<String> listOfStrings, ArrayList<String> removeList) {
+	public static void getRemaining(ArrayList<String> listOfStrings, ArrayList<String> removeList) throws FileNotFoundException, UnsupportedEncodingException {
 		// At this point we will retrieve all the functions
 		// SOLUTION Remove the main class match it with the above
-		for (int i = 0; i < removeList.size(); ++i) {
-			for (int j = 0; j < listOfStrings.size(); ++j) {
-				if (removeList.get(i).toString().equals(listOfStrings.get(j).toString())) {
-					listOfStrings.remove(j);
+		int starting = 0, ending = 0;
+		for (int j = 0; j < listOfStrings.size(); ++j) {
+
+			// Remove all the imports
+			if (listOfStrings.get(j).contains("import")) {
+				listOfStrings.remove(j);
+			}
+
+			if (listOfStrings.get(j).contains("public static void main")) {
+				starting = j;
+				int leftCurlyBrackets = 0, rightCurlyBrackets = 0;
+				for (int i = j; i < listOfStrings.size(); ++i) {
+
+					if (listOfStrings.get(i).contains("{"))
+						leftCurlyBrackets++;
+					if (listOfStrings.get(i).contains("}"))
+						rightCurlyBrackets++;
+
+					if (rightCurlyBrackets == leftCurlyBrackets && leftCurlyBrackets > 1) {
+						ending = i;
+						break;
+					}
 				}
 
-				if (listOfStrings.get(j).toString().contains("main")
-						|| listOfStrings.get(j).toString().contains("class")
-						|| listOfStrings.get(j).toString().contains("import")) {
-					listOfStrings.remove(j);
+			}
+
+		}
+
+		// Remove all the main class
+		listOfStrings.subList(starting, ending + 1).clear();
+
+		// Remove class and it's curly brackets
+		boolean first = false;
+		int posLast = 0;
+		for (int j = 0; j < listOfStrings.size(); ++j) {
+			if (listOfStrings.get(j).contains("class")) {
+				listOfStrings.remove(j);
+				int leftCurlyBrackets = 0, rightCurlyBrackets = 0;
+				for (int i = j; i < listOfStrings.size(); ++i) {
+
+					if (listOfStrings.get(i).contains("{")) {
+						leftCurlyBrackets++;
+						if (!first) {
+							listOfStrings.remove(i);
+							first = true;
+						}
+					}
+
+					if (listOfStrings.get(i).contains("}")) {
+						rightCurlyBrackets++;
+						posLast = i;
+					}
+
+					if (rightCurlyBrackets == leftCurlyBrackets && leftCurlyBrackets > 1) {
+						listOfStrings.remove(posLast);
+						break;
+					}
 				}
 			}
 		}
 
-
-		// Now explicitly remove curly brackets not needed
-
-		// More filtering is required, I know that
+		PrintWriter writer = new PrintWriter("functionsCodeBlock.txt", "UTF-8");
 		for (int k = 0; k < listOfStrings.size(); ++k)
-			System.out.println(listOfStrings.get(k).toString());
+			writer.println(listOfStrings.get(k).toString());
+	
+		writer.close();
 	}
 
 }
