@@ -1,10 +1,15 @@
 import java.awt.List;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -27,6 +32,10 @@ public class addSourceCode {
 
 			removeList = getMainBlock(listOfStrings);
 			getRemaining(listOfStrings, removeList);
+			getImports(listOfStrings);
+			addInFileMain("mainCodeBlock.txt", args[1]);
+			addInFileFunctions("functionsCodeBlock.txt", args[1]);
+			addInFileImports("importsCodeBlock.txt", args[1]);
 		}
 
 	}
@@ -88,17 +97,12 @@ public class addSourceCode {
 
 	// Function to get the remaining functions and add them in the
 	// EnergyCheckUtils
-	public static void getRemaining(ArrayList<String> listOfStrings, ArrayList<String> removeList) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void getRemaining(ArrayList<String> listOfStrings, ArrayList<String> removeList)
+			throws FileNotFoundException, UnsupportedEncodingException {
 		// At this point we will retrieve all the functions
 		// SOLUTION Remove the main class match it with the above
 		int starting = 0, ending = 0;
 		for (int j = 0; j < listOfStrings.size(); ++j) {
-
-			// Remove all the imports
-			if (listOfStrings.get(j).contains("import")) {
-				listOfStrings.remove(j);
-			}
-
 			if (listOfStrings.get(j).contains("public static void main")) {
 				starting = j;
 				int leftCurlyBrackets = 0, rightCurlyBrackets = 0;
@@ -155,8 +159,123 @@ public class addSourceCode {
 		PrintWriter writer = new PrintWriter("functionsCodeBlock.txt", "UTF-8");
 		for (int k = 0; k < listOfStrings.size(); ++k)
 			writer.println(listOfStrings.get(k).toString());
-	
 		writer.close();
 	}
 
+	// Function to append in EnergyCheckUtils (Main)
+	public static void addInFileMain(String fileName, String EnergyCheckUtilspath)
+			throws FileNotFoundException, IOException {
+
+		StringBuilder sb = new StringBuilder();
+		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+			String line;
+
+			while ((line = br.readLine()) != null) {
+				// System.out.println(line);
+				sb.append(line);
+				sb.append("\n");
+			}
+		}
+
+		// Now we will append the string in the new line
+		Path path = Paths.get(EnergyCheckUtilspath);
+		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path, StandardCharsets.UTF_8);
+
+		int position = 0;
+		// Find where the double[] before is
+
+		for (int i = 0; i < lines.size(); ++i) {
+			if (lines.get(i).contains("double[] before")) {
+				position = i + 2;
+				break;
+			}
+			// System.out.println(lines.get(i).toString());
+		}
+
+		lines.add(position, sb.toString());
+		Files.write(path, lines, StandardCharsets.UTF_8);
+	}
+
+	// Function to append in EnergyCheckUtils (Functions)
+	public static void addInFileFunctions(String fileName, String EnergyCheckUtilspath)
+			throws FileNotFoundException, IOException {
+
+		StringBuilder sb = new StringBuilder();
+		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+			String line;
+
+			while ((line = br.readLine()) != null) {
+				// System.out.println(line);
+				if (!line.contains("import")) {
+					sb.append(line);
+					sb.append("\n");
+				}
+			}
+		}
+
+		// Now we will append the string in the new line
+		Path path = Paths.get(EnergyCheckUtilspath);
+		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path, StandardCharsets.UTF_8);
+
+		int position = 0;
+		// Find where the double[] before is
+
+		for (int i = 0; i < lines.size(); ++i) {
+			if (lines.get(i).contains("ADD HERE ALL FUNCTIONS")) {
+				position = i + 1;
+				break;
+			}
+			// System.out.println(lines.get(i).toString());
+		}
+
+		lines.add(position, sb.toString());
+		Files.write(path, lines, StandardCharsets.UTF_8);
+	}
+
+	// Function to get all imports
+	public static void getImports(ArrayList<String> listOfStrings)
+			throws FileNotFoundException, UnsupportedEncodingException {
+		ArrayList<String> newList = new ArrayList();
+
+		// Add the the import lines in a new array
+		for (int i = 0; i < listOfStrings.size(); ++i) {
+			if (listOfStrings.get(i).contains("import")) {
+				newList.add(listOfStrings.get(i).toString());
+			}
+		}
+
+		PrintWriter writer = new PrintWriter("importsCodeBlock.txt", "UTF-8");
+		for (int k = 0; k < newList.size(); ++k)
+			writer.println(newList.get(k).toString());
+		writer.close();
+	}
+
+	// Function to add imports in EnergyCheckUtils.java
+	public static void addInFileImports(String fileName, String EnergyCheckUtilspath) throws IOException {
+		Path path = Paths.get(EnergyCheckUtilspath);
+		ArrayList<String> lines = (ArrayList<String>) Files.readAllLines(path, StandardCharsets.UTF_8);
+
+		StringBuilder sb = new StringBuilder();
+		int position = 0;
+		try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+			String line;
+
+			while ((line = br.readLine()) != null) {
+				// System.out.println(line);
+				sb.append(line);
+				sb.append("\n");
+			}
+		}
+
+		for (int i = 0; i < lines.size(); ++i) {
+			if (lines.get(i).contains("//START ADDING HERE ALL IMPORRTS")) {
+				position = i + 1;
+			}
+			// System.out.println(lines.get(i).toString());
+		}
+
+		lines.add(position, sb.toString());
+		Files.write(path, lines, StandardCharsets.UTF_8);
+
+	}
 }

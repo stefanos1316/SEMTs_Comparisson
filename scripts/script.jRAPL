@@ -1,0 +1,45 @@
+#!/bin/bash
+
+#This script is responsible to retrieve from the user a .java file that will include in EnergyCheckUtils.java in 
+#order to retrieve energy consuption measurements. 
+
+#Command-line arguments
+#$1 -> full path of the .java file
+#$2 -> full path of the EnergyCheckUtils.java file where the merging will happen
+
+if [ "$#" -ne 2 ]; then
+	echo "Illegal number of parameters"
+fi
+
+if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
+	echo "\$1 -> Full path of the .java file"
+	echo "\$2 -> Full path of the EnergyCheckUtils.java file where the merging will happen (can be found in jRAPL directory)"
+fi
+
+#At this point we will execute the addSourceCode java file in order to retrieve the plain main and functions from the 
+#given command line arguments
+
+javac addSourceCode.java
+javac removeSourceCode.java
+
+java addSourceCode $1 $2
+
+#After applying the change compile EnergyChcekUtils.java
+javac $2
+getDirectoryPath=$(echo $2 | awk -F "/" '{$NF="";print}' | tr ' ' '/')
+getExecutable=$(echo $2 | awk -F "." '{print $1}' | awk -F "/" '{print $NF}')
+
+#Now send send executable in jRAPL dircetory found in the parent directory and execute it there
+mv $getExecutable ../jRAPL/.
+
+java -classpath ../jRAPL/ $getExecutable
+
+exit
+#java removeSourceCode $2
+
+echo "Files mainCodeBlock.txt and functionsCodeBlock.txt created under the scripts directory"
+echo "Incorporating them files in $2"
+
+#Finding double[] before = getEnergy(); to append the code after it
+
+exit

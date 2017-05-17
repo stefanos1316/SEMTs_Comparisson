@@ -87,7 +87,7 @@ public class BenchmarkingSortingAlgorithms
 			}
         }
   	
-	System.exit(1);     
+	//System.exit(1);     
     }
 
     /**

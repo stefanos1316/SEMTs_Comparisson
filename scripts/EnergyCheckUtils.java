@@ -1,12 +1,11 @@
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Scanner;
-import java.io.*;
 
-public class EnergyCheckUtils_compressing {
+//START ADDING HERE ALL IMPORRTS
+
+//STOP ADDING IMPORTS
+
+
+public class EnergyCheckUtils {
 	public native static int scale(int freq);
 	public native static int[] freqAvailable();
 
@@ -78,35 +77,19 @@ public class EnergyCheckUtils_compressing {
 
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {    
 
 		double[] before = getEnergyStats();
-		
-	    if (args.length != 1) {
-	    	System.out.println("Please provide a files path (as a command-line parameter) for compressing and decompressing");
-	    	System.exit(1);
-	    }
-	    
-	    Scanner scanner = new Scanner( new File(args[0]), "UTF-8" );
-	    String text = scanner.useDelimiter("\\A").next();
-	    scanner.close();
+    	
 
-	    
-	    String output = LZString.compress(text);
-
-	    System.out.println("Compressed: " + output);
-
-	    String decompressed = LZString.decompress(output);
-
-	    System.out.println("Decompressed: " + decompressed);
-	    
-	    System.out.println("Done!!!");
-		
+    	
 		double[] after = getEnergyStats();
 		for(int i = 0; i < socketNum; i++) {
 			System.out.println("Power consumption of dram: " + (after[0] - before[0]) / 10.0 + " power consumption of cpu: " + (after[1] - before[1]) / 10.0 + " power consumption of package: " + (after[2] - before[2]) / 10.0);
 		}
 		ProfileDealloc();
 	}
-	
+
+//ADD HERE ALL FUNCTIONS
+
 }
