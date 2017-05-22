@@ -11,6 +11,7 @@ The whole process is automated for the users, however, a user has to define as a
 
 # How to Run
 The usual way for executing any of thise scripts follows as:
+
 	$./script.[jolinar, jalen, PowerAPI, RAPL] /path/where/the/jar/file/is/located/ /path/to/store/log/files/and/results/ application's_parameter_1, application's_parameter_2, ... application's_parameter_N
 
 # Optional Information
