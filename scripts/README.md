@@ -1,5 +1,6 @@
 # Requirements
 -java version 8
+
 -maven version 3
 
 # Platform's set-up
@@ -7,6 +8,7 @@ Before testing any applications execute the script Disable_P_State if the system
 
 # General Information
 This directory contains a number of scripts that will execute an applications and on the site will retrieve energy/power measurements.
+
 The whole process is automated for the users, however, a user has to define as a command line arguments its application's paramenters.
 
 # How to Run
