@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#This magic script was created in order to plot real time graphs to that depitcs the energy consumtpion of different parts 
+#of the system
+
+# plot graph for the wireless traffic while true; do sleep 1; cat /proc/net/dev; done | awk '/wlp2s0/ {if(b) {print $2-b; fflush()} b=$2}' | feedgnuplot --lines --stream --xlen 10 --ylabel 'Bytes/sec' --xlabel seconds
+
+#In the same way create the one to read from the file.
