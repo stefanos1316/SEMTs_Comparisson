@@ -1,6 +1,0 @@
-java.lang.Object.wait;0.005303100631401051;0.0
-java.lang.Thread.dumpThreads;35.4069695446542;0.0
-BenchmarkingSortingAlgorithms.createArrayWithRandomInts;0.0;0.0
-java.io.FileInputStream.close;0.007665468179175263;0.0
-java.util.Random.nextDouble;0.0;0.0
-BenchmarkingSortingAlgorithms.bubbleSort;4731.776094344818;0.0
