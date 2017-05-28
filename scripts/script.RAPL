@@ -39,18 +39,24 @@ function getProcessID {
 pgrep java | awk '{print $NF}'
 }
 
-eval=$(java -jar $1 ${@:3} &) 
-
-while true 
+function callRAPL {
+while true ;
 do
-	if ps -p $(getProcessID)  > /dev/null
-	then
-		eval=$(./../uarch-configure/rapl-read/rapl-plot >> resultsFromRapl_Plot.txt)
-	else
-		break
-	fi
+	eval=$(./../uarch-configure/rapl-read/rapl-plot >> resultsFromRapl_Plot.txt)
 done
+}
 
+function plotGraph {
+while true ;
+do
+	sleep 1;
+        tail -1  resultsFromRapl_Plot.txt; 
+done | awk  '{print $2, $3, $4, $5, $6; fflush()}'| feedGnuplot --lines --stream --title "System's Power Consumption -- via RAPL" --xlen 10 --ylabel "Power (Watts)" --xlabel "Time (seconds)" --exit
+}
+
+#eval=$(java -jar $1 ${@:3} &)
+callRAPL &
+plotGraph 
 echo "Results collected, exiting"
 mv resultsFromRapl_Plot.txt $raplLogDirName
 
