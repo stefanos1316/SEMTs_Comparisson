@@ -1,7 +1,7 @@
 # Requirements
--java version 8
+-java (tested on version 8)
 
--maven version 3
+-maven (tested on version 3)
 
 -[feedGnuplot](http://search.cpan.org/~dkogan/feedgnuplot-1.42/bin/feedgnuplot)
 
