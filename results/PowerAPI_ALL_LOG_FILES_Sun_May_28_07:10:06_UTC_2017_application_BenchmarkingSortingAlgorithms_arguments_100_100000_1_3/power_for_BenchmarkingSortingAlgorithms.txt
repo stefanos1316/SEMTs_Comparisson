@@ -1,0 +1,5 @@
+unknown monitor option duration
+muid=ec4c78e8-fee6-4298-8530-755cefc5ac7d;timestamp=1495955411606;target=5268;devices=cpu;power=0.0
+muid=ec4c78e8-fee6-4298-8530-755cefc5ac7d;timestamp=1495955412615;target=5268;devices=cpu;power=8.172544080604533
+muid=ec4c78e8-fee6-4298-8530-755cefc5ac7d;timestamp=1495955413613;target=5268;devices=cpu;power=0.0
+muid=ec4c78e8-fee6-4298-8530-755cefc5ac7d;timestamp=1495955414614;target=5268;devices=cpu;power=0.0
