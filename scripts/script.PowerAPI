@@ -55,7 +55,7 @@ while pgrep -x java > /dev/null ;
 do
 	sleep 1;
         tail -1  power_for_$applicationsName.txt; 
-done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --xlen 10 --ylabel 'Bytes/sec' --xlabel seconds --exit
+done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
 }
 
 eval=$(java -jar $1 ${@:4}) &

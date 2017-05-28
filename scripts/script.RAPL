@@ -10,13 +10,14 @@
 
 if [ "$#" -lt 2 ]; then
         echo "Illegal number of paramters"
+	exit
 fi
 
 if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
         echo "$1 -> Application's jar path for execution"
         echo "$2 -> Log files locations (we suggest to use the 'results' directory found in our repository)"
         echo "$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)"
-
+	exit
 fi
 
 applicationsName=$(echo $1 | awk -F "/" '{print $NF}' | awk -F "." '{print $1}')
@@ -51,7 +52,7 @@ while true ;
 do
 	sleep 1;
         tail -1  resultsFromRapl_Plot.txt; 
-done | awk  '{print $2, $3, $4, $5, $6; fflush()}'| feedGnuplot --lines --stream --title "System's Power Consumption -- via RAPL" --xlen 10 --ylabel "Power (Watts)" --xlabel "Time (seconds)" --exit
+done | awk  '{print $2, $3, $4, $5, $6; fflush()}'| feedGnuplot --lines --stream --title "System's Power Consumption -- via RAPL" --legend 0 "Package0" --legend 1 "CPU" --legend 2 "GPU" --legend 3 "DRAM" --legend 4 "Psys" --xlen 10 --ylabel "Power (Watts)" --xlabel "Time (seconds)" --exit
 }
 
 #eval=$(java -jar $1 ${@:3} &)
