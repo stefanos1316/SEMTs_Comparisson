@@ -1,3 +1,0 @@
-BenchmarkingSortingAlgorithms.createArrayWithRandomInts;0.0;0.0
-java.lang.Thread.dumpThreads;0.3157027798585326;0.0
-BenchmarkingSortingAlgorithms.bubbleSort;14.431158607556226;0.0
