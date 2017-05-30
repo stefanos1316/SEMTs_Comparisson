@@ -9,15 +9,17 @@
 #$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)
 
 
-if [ "$#" -lt 2 ]; then
-	echo "Illegal number of paramters"
+if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
+	echo "\$1 -> Application's jar path for execution"
+	echo "\$2 -> Log files locations (we suggest to use the 'results' directory found in our repository)"
+	echo "\$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)"
+	exit
 fi
 
-if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
-	echo "$1 -> Application's jar path for execution"
-	echo "$2 -> Log files locations (we suggest to use the 'results' directory found in our repository)"
-	echo "$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)"
 
+if [ "$#" -lt 2 ]; then
+        echo "Illegal number of paramters"
+        exit
 fi
 
 applicationsName=$(echo $2 | awk -F "/" '{print $NF}')

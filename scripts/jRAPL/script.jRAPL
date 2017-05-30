@@ -7,13 +7,15 @@
 #$1 -> full path of the .java file
 #$2 -> full path of the EnergyCheckUtils.java file where the merging will happen
 
-if [ "$#" -lt 2 ]; then
-	echo "Illegal number of parameters"
-fi
-
 if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
 	echo "\$1 -> Full path of the .java file"
 	echo "\$2 -> Full path of the EnergyCheckUtils.java file where the merging will happen (can be found in jRAPL directory)"
+	exit
+fi
+
+if [ "$#" -lt 2 ]; then
+        echo "Illegal number of parameters"
+        exit
 fi
 
 #At this point we will execute the addSourceCode java file in order to retrieve the plain main and functions from the 
