@@ -26,8 +26,8 @@ javac removeSourceCode.java
 
 java addSourceCode $1 $2
 
-#Cp the EnergyCheckUtils in jRAPL
-cp EnergyCheckUtils.java ../jRAPL
+#Copy the EnergyCheckUtils in jRAPL
+cp EnergyCheckUtils.java ../../jRAPL
 
 
 #After applying the change compile EnergyChcekUtils.java

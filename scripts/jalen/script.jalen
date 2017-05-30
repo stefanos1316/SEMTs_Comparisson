@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #This script will execute and measure applications located inside this repo.
 
 #Command-line parameters

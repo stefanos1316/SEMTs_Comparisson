@@ -22,7 +22,7 @@ if [ "$#" -lt 3 ]; then
 fi
 
 #Drive to power-cli directory
-cd ../powerapi-cli/bin/
+cd ../../powerapi-cli/bin/
 
 applicationsName=$(echo $1 | awk -F "/" '{print $NF}' | awk -F "." '{print $1}')
 
