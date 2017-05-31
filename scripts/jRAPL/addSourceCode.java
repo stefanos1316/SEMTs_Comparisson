@@ -31,8 +31,9 @@ public class addSourceCode {
 			}
 
 			removeList = getMainBlock(listOfStrings);
-			getRemaining(listOfStrings, removeList);
 			getImports(listOfStrings);
+			getRemaining(listOfStrings, removeList);
+			
 			addInFileMain("mainCodeBlock.txt", args[1]);
 			addInFileFunctions("functionsCodeBlock.txt", args[1]);
 			addInFileImports("importsCodeBlock.txt", args[1]);
@@ -47,19 +48,21 @@ public class addSourceCode {
 		// main
 		ArrayList<String> newList = new ArrayList();
 		for (int i = 0; i < listOfStrings.size(); ++i) {
-			// System.out.println(listOfStrings.get(i).toString());
 			if (listOfStrings.get(i).contains("public static void main")) {
-				// System.out.println("Found you");
-
-				// At this point of the code will find all the right curly
-				// brackets and
 				int j = 0;
 				int leftCurly = 0, rightCurly = 0;
 				int starting = 0, ending = 0;
-				if (!listOfStrings.get(i).contains("{")) {
-					j = i;
-				} else {
+				if (listOfStrings.get(i).contains("{")) {
 					j = i + 1;
+					leftCurly++;
+				} else {
+					for (int k = i + 1; k < listOfStrings.size(); ++k) {
+						if (listOfStrings.get(k).contains("{")) {
+							j = k + 1;
+							leftCurly++;
+							break;
+						}
+					}
 				}
 
 				starting = j;
@@ -69,8 +72,8 @@ public class addSourceCode {
 					if (listOfStrings.get(j).contains("}"))
 						rightCurly++;
 
-					if (leftCurly == 2)
-						starting = j;
+					// if (leftCurly == 2)
+					// starting = j;
 
 					// if the left and right are the same it means we have found
 					// the end of the curly bracket
@@ -83,6 +86,7 @@ public class addSourceCode {
 				PrintWriter writer = new PrintWriter("mainCodeBlock.txt", "UTF-8");
 
 				for (int k = starting; k < ending; ++k) {
+					// System.out.println(listOfStrings.get(k).toString());
 					writer.println(listOfStrings.get(k).toString());
 					newList.add(listOfStrings.get(k));
 				}
@@ -90,8 +94,6 @@ public class addSourceCode {
 				break;
 			}
 		}
-
-		// Write to a newFile the code blocks
 		return newList;
 	}
 
@@ -118,48 +120,66 @@ public class addSourceCode {
 						break;
 					}
 				}
-
 			}
-
 		}
 
 		// Remove all the main class
 		listOfStrings.subList(starting, ending + 1).clear();
 
-		// Remove class and it's curly brackets
-		boolean first = false;
-		int posLast = 0;
-		for (int j = 0; j < listOfStrings.size(); ++j) {
-			if (listOfStrings.get(j).contains("class")) {
-				listOfStrings.remove(j);
-				int leftCurlyBrackets = 0, rightCurlyBrackets = 0;
-				for (int i = j; i < listOfStrings.size(); ++i) {
-
-					if (listOfStrings.get(i).contains("{")) {
-						leftCurlyBrackets++;
-						if (!first) {
-							listOfStrings.remove(i);
-							first = true;
-						}
-					}
-
-					if (listOfStrings.get(i).contains("}")) {
-						rightCurlyBrackets++;
-						posLast = i;
-					}
-
-					if (rightCurlyBrackets == leftCurlyBrackets && leftCurlyBrackets > 1) {
-						listOfStrings.remove(posLast);
-						break;
-					}
+		// Remove all imports
+		int startImports = 0, endImports = 0;
+		boolean findFirst = true;
+		for (int t = 0; t < listOfStrings.size(); ++t) {
+			if (findFirst) {
+				if (listOfStrings.get(t).contains("import")) {
+					startImports = t;
+					findFirst = false;
 				}
+			}
+
+			if (listOfStrings.get(t).contains("class")) {
+				endImports = t - 1;
+				break;
 			}
 		}
 
-		PrintWriter writer = new PrintWriter("functionsCodeBlock.txt", "UTF-8");
-		for (int k = 0; k < listOfStrings.size(); ++k)
-			writer.println(listOfStrings.get(k).toString());
-		writer.close();
+		listOfStrings.subList(startImports, endImports).clear();
+
+		// Remove class and it's curly brackets
+		boolean first = false;
+		int posLast = 0, startingPoint = 0;
+
+		// Remove class lines and the first bracket
+		for (int i = 0; i < listOfStrings.size(); ++i) {
+			if (listOfStrings.get(i).contains("class") && listOfStrings.get(i).contains("{")) {
+				listOfStrings.remove(i);
+				break;
+			}
+
+			if (listOfStrings.get(i).contains("class") && !listOfStrings.get(i).contains("{")) {
+				listOfStrings.remove(i);
+				for (int k = i + 1; k < listOfStrings.size(); ++k) {
+					if (listOfStrings.get(k).contains("{")) {
+						listOfStrings.remove(k);
+						break;
+					}
+				}
+				break;
+			}
+		}
+
+		// Remove
+		for (int j = listOfStrings.size(); j < 0; --j) {
+			if (listOfStrings.get(j).contains("{")) {
+				listOfStrings.remove(j);
+				break;
+			}
+		}
+
+		PrintWriter writers = new PrintWriter("functionsCodeBlock.txt", "UTF-8");
+		for (int k = startingPoint; k < listOfStrings.size(); ++k)
+			writers.println(listOfStrings.get(k).toString());
+		writers.close();
 	}
 
 	// Function to append in EnergyCheckUtils (Main)

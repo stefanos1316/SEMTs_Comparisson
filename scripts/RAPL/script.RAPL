@@ -24,7 +24,7 @@ pgrep java | awk '{print $NF}'
 function callRAPL {
 while true ;
 do
-	eval=$(./../uarch-configure/rapl-read/rapl-plot >> resultsFromRAPL_Plot.txt) 
+	eval=$(./../../uarch-configure/rapl-read/rapl-plot >> resultsFromRAPL_Plot.txt) 
 done
 }
 

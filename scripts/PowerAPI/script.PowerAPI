@@ -8,11 +8,18 @@
 #$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)
 
 
-if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
-	echo "\$1 -> Application's jar path for execution"
-	echo "\$2 -> Log files locations (we suggest to use the 'results' directory found in our repository)"
-	echo "\$3 -> Give duration is seconds, required as an argument from PowerAPI in order to monitor an appilcation"
-	echo "\$4 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)"
+if [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ] || [ "$1" == "--h" ]; then
+	echo "--arguments     If luanching a new application and arguments are needed (enclose all"
+	echo "	        arguments in double quotes \" and separate with spaces)"
+	echo "--application	Full path where the application's source code is found"
+	echo "--duration      Durations time for monitoring a process"
+	echo "--language	Specify in which programming language the application is written"
+	echo "--logs		Full path where all the log files form the monitoring process are stored"
+	echo "--process	Provide the PID of a running process"
+	#echo "\$1 -> Application's jar path for execution"
+	#echo "\$2 -> Log files locations (we suggest to use the 'results' directory found in our repository)"
+	#echo "\$3 -> Give duration is seconds, required as an argument from PowerAPI in order to monitor an appilcation"
+	#echo "\$4 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)"
 	exit
 fi
 
@@ -20,6 +27,39 @@ if [ "$#" -lt 3 ]; then
 	echo "Illegal number of command line arguments"
 	exit
 fi
+
+#Get all arguments
+args=("$@") 
+
+#Get number of elements 
+ELEMENTS=${#args[@]} 
+
+#Initiallize parameters
+arguments=0
+applicationPath=0
+duration=0
+programmingLanguage=0
+logsPath=0
+processID=0
+
+# echo each element in array  
+# for lQsds
+for (( i=0;i<$ELEMENTS;++i)); do  
+
+	case "${args[${i}]}" in 
+	("--arguments") arguments=${args[i+1]} ;;
+	("--application") applicationPath="${args[i+1]}" ;;
+	("--duration") duration="${args[i+1]}" ;;
+	("--language") language="${args[i+1]}" ;;
+	("--logs") logs="${args[i+1]}" ;;
+	("--process") process="${args[i+1]}" ;;
+	esac
+done
+
+#Store all arguments in an array
+IFS=" " read -a arrayOfArguments <<< "$arguments"
+
+exit
 
 #Drive to power-cli directory
 cd ../../powerapi-cli/bin/
@@ -39,6 +79,9 @@ powerAPILogDirCreate="$(mkdir -p $powerAPILogDirName)"
 eval=$powerAPILogDirCreate
 echo "Log Directory $powerAPILogDirName is created"
 
+###############################################################################################################################################
+##						ALL FUNCTIONS HERE									     ##
+###############################################################################################################################################
 function getProcessID {
 pgrep java | awk '{print $NF}' 
 }
@@ -50,13 +93,16 @@ echo "Duration is $duration"
 }
 
 function callPlotRealTimeGraphs {
-
 while pgrep -x java > /dev/null ;
 do
 	sleep 1;
         tail -1  power_for_$applicationsName.txt; 
 done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
 }
+
+
+
+#################################################################################################################################################
 
 eval=$(java -jar $1 ${@:4}) &
 echo "$(getProcessID)"

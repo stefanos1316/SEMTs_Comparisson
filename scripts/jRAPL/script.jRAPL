@@ -9,7 +9,7 @@
 
 if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
 	echo "\$1 -> Full path of the .java file"
-	echo "\$2 -> Full path of the EnergyCheckUtils.java file where the merging will happen (can be found in jRAPL directory)"
+	echo "\$2 -> Full path of the EnergyCheckUtils.java file where the merging will happen (found under SEMTs_Comparisson/jRAPL/)"
 	exit
 fi
 
@@ -24,6 +24,9 @@ fi
 javac addSourceCode.java
 javac removeSourceCode.java
 
+echo "Cleaning EnergyCheckUtils.java..."
+java removeSourceCode $2
+
 java addSourceCode $1 $2
 
 #Copy the EnergyCheckUtils in jRAPL
@@ -31,12 +34,12 @@ cp EnergyCheckUtils.java ../../jRAPL
 
 
 #After applying the change compile EnergyChcekUtils.java
-javac ../jRAPL/EnergyCheckUtils.java
+javac ../../jRAPL/EnergyCheckUtils.java
 #getDirectoryPath=$(echo $2 | awk -F "/" '{$NF="";print}' | tr ' ' '/')
 #getExecutable=$(echo $2 | awk -F "." '{print $1}' |  awk -F "/" '{print $NF}')
-cd ../jRAPL/
+cd ../../jRAPL/
 java EnergyCheckUtils ${@:3}
-cd ../scripts/
+cd ../scripts/jRAPL/
 java removeSourceCode $2
 
 echo "Files mainCodeBlock.txt and functionsCodeBlock.txt created under the scripts directory"
