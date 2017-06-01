@@ -16,7 +16,7 @@ The whole process is automated for the users, however, a user has to define as a
 # How to Execute
 Get more information about command line arguments through the -h or -help command:
 
-	$./script.[jolinar, jalen, PowerAPI, RAPL] -h or -help
+	$./script.[jolinar, jalen, PowerAPI, RAPL] -h, -help, --h, or --help
 
 # Optional Information
 It is suggested for the user to store the log files and results (command line arguments $2) in the results directory found under the SEMTs_Comparisson repository.
