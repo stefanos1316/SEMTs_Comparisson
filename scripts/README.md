@@ -19,5 +19,5 @@ Get more information about command line arguments through the -h or -help comman
 	$./script.[jolinar, jalen, PowerAPI, RAPL] -h, -help, --h, or --help
 
 # Optional Information
-It is suggested for the user to store the log files and results (command line arguments $2) in the results directory found under the SEMTs_Comparisson repository.
+It is suggested for the user to store the log files and results (command line argument --logs) in the results directory found under the SEMTs_Comparisson repository.
 
