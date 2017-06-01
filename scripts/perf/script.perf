@@ -1,0 +1,21 @@
+#!/bin/bash
+
+#This script makes use of perf, a Linux profiling with performance counters
+
+rm -rf perf_results.txt
+
+function retrieveResults {
+perf stat -a -e power/energy-cores/ -e power/energy-gpu/ -e power/energy-pkg/ -e power/energy-psys/ -e power/energy-ram/ -I 1000 | awk 'BEGIN { ORS = "	" } { print }'
+}
+
+function plotGraph {
+while true
+do
+	sleep 1;
+	tail -5 perf_results.txt | column -t;
+done
+}
+
+echo "Starting"
+retrieveResults
+#plotGraph

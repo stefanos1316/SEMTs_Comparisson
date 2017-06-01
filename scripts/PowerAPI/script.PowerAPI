@@ -116,7 +116,7 @@ wait $(jobs -p)
 echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 ###############################################################################################################################################
 
-#Move all the collected results in the proposer file
+#Move all the collected results in the proper file
 mv power_for_$applicationsName.txt $powerAPILogDirName
 
 echo "Exiting..."

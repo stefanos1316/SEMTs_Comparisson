@@ -2,33 +2,51 @@
 
 #This script will execute and measure applications located inside this repo.
 
-#Command-line parameters
-#$1 -> Application's jar path for execution
-#$2 -> Log files locations (full paht needed)
-#$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)
-
-
-if [ "$1" == "-h" ] || [ "$1" == "-help" ]; then
-	echo "\$1 -> Application's jar path for execution"
-	echo "\$2 -> Log files locations (we suggest to use the 'results' directory found in our repository)"
-	echo "\$3 -> Give all the arguments that are necessary for the selected applications (command-line arguments num 2)"
-	exit
-fi
-
-if [ "$#" -lt 2 ]; then
-        echo "Illegal number of paramters"
+if [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ] || [ "$1" == "--h" ]; then
+        echo "--arguments       If luanching a new application and arguments are needed (enclose all"
+        echo "         	  arguments in double quotes \" and separate with spaces)"
+        echo "--application     Full path where the application's source code is found"
+        echo "--logs            Full path where all the log files form the monitoring process are stored"
         exit
 fi
+
+if [ "$#" -lt 3 ]; then
+        echo "Illegal number of command line arguments"
+        exit
+fi
+
+#Get all arguments
+args=("$@")
+
+#Get number of elements
+ELEMENTS=${#args[@]}
+
+#Initiallize parameters
+arguments=0
+applicationPath=0
+logsPath="./"
+
+# echo each element in array 
+# for lQsds
+for (( i=0;i<$ELEMENTS;++i)); do 
+
+        case "${args[${i}]}" in
+        ("--arguments") arguments=${args[i+1]} ;;
+        ("--application") applicationPath="${args[i+1]}" ;;
+        ("--logs") logsPath="${args[i+1]}" ;;
+        esac
+done
+
 
 #Upon executing jolinar csv files are created which are confliciting with the script, that is why we remove them
 rm -rf *.csv
 
-applicationsName=$(echo $1 | awk -F "/" '{print $NF}' | awk -F "." '{print $1}')
-otherCommandLineArguments=$(echo ${@:3} | tr ' ' '_')
+applicationsName=$(echo applicationPath | awk -F "/" '{print $NF}' | awk -F "." '{print $1}')
+otherCommandLineArguments=$(echo $arguments | tr ' ' '_')
 
 #Creating new Directory for the log files
 jolinarLogDirDate="$(date -u | sed -e 's/ /_/g')" 
-jolinarLogDirName=$2/"Jolinar_ALL_LOG_FILES_"$jolinarLogDirDate"_application_"$applicationsName"_arguments_"$otherCommandLineArguments
+jolinarLogDirName=$logs/"Jolinar_ALL_LOG_FILES_"$jolinarLogDirDate"_application_"$applicationsName"_arguments_"$otherCommandLineArguments
 jolinarLogDirCreate="$(mkdir -p $jolinarLogDirName)"
 eval=$jolinarLogDirCreate
 echo "Log Directory $jolinarLogDirName is created"
@@ -37,11 +55,6 @@ echo "Log Directory $jolinarLogDirName is created"
 #######################################################################################
 ##			FUNCTIONS						     ##
 #######################################################################################
-
-function runJolinar {
-eval=$(./../jolinar/2.5/jolinar/jolinar java -jar $1 ${@:3}) 
-}
-
 function plotGraph {
 programName="$1"
 echo "Here program stupid $programName"
@@ -49,14 +62,13 @@ while true;
 do
 	sleep 1;
 	tail -2 *-power.csv;
-#done | awk -F ";" '{print $1, $2, $3; fflush()}' | feedGnuplot --lines --stream --title "$1 Power Consumption -- via Jolinar" --legend 0 "CPU" --legend 1 "Hard Disk" --legend 2 "Memory" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit 
 done | awk -F ";" '{for(i=1;i<=2;i++) a+=$1; b+=$2; c+=$3; print a, b, c; a=0; b=0; c=0; fflush()}' | feedGnuplot --lines --stream --title "$1 Power Consumption -- via Jolinar" --legend 0 "CPU" --legend 1 "Hard Disk" --legend 2 "Memory" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
 }
 
 #######################################################################################
 #runJolinar &
 
-executeTasks=$( ./../../jolinar/2.5/jolinar/jolinar java -jar $1 ${@:3} ) &
+executeTasks=$( ./../../jolinar/2.5/jolinar/jolinar java -jar $applicationPath $arguments ) &
 eval=$executeTasks &
 plotGraph $applicationsName &
 wait $(jobs -p)

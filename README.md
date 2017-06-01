@@ -10,3 +10,8 @@ For more information you can contact with me at <sgeorgiou@aueb.gr> or <stefanos
 For cloning this repository you should use the receursive command since it includes submodules
 
 $ git clone --recursive https://github.com/stefanos1316/SEMTs_Comparisson.git
+
+#Tested Distros
+
+* Fedora 24, 25
+* Ubuntu 14.04
