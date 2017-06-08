@@ -7,12 +7,12 @@ Most of the scripts (found under the script directory) containes information on 
 
 For more information or questions you can contact with me at <sgeorgiou@aueb.gr>, <sgeorgiou@singularlogic.eu> or <stefanos1316@gmail.com>
 
-# CLONING
+# Cloning
 For cloning this repository you should use the receursive command since it includes submodules
 
 $ git clone --recursive https://github.com/stefanos1316/SEMTs_Comparisson.git
 
-# Tested on Distros
+# Tested on
 
 * Fedora 24, 25
 * Ubuntu 14.04
