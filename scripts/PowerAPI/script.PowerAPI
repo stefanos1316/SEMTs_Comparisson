@@ -13,6 +13,8 @@ if [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ] || [ "$1" == 
 	echo "--language	Specify in which programming language the application is written"
 	echo "--logs		Full path where all the log files form the monitoring process are stored"
 	echo "--process	Provide the PID of a running process"
+	echo "--comparing	Add the full path of a different implementation of the same application"
+	echo "		in order to compare them"
 	exit
 fi
 
@@ -34,6 +36,7 @@ duration=0
 programmingLanguage=0
 logsPath=0
 processID=0
+comparing=0
 
 # echo each element in array  
 # for lQsds
@@ -46,11 +49,12 @@ for (( i=0;i<$ELEMENTS;++i)); do
 	("--language") programmingLanguage="${args[i+1]}" ;;
 	("--logs") logsPath="${args[i+1]}" ;;
 	("--process") processID="${args[i+1]}" ;;
+	("--comparing") comparing="${args[i+1]}" ;;
 	esac
 done
 
 #Second validation of parameters
-if [ $applicationPath -ne 0 ] && [ $process -ne 0 ];
+if [ "$applicationPath" == "0" ] && [ "$process" == "0" ];
 #Which means user gave both application and process
 then
 	echo "Error: Provide only application's source code or process ID to monitor"
@@ -65,14 +69,15 @@ otherCommandLineArguments=$(echo $arguments | tr ' ' '_')
 
 #Drive to power-cli directory
 cd ../../powerapi-cli/bin/
-
+#Remove power_for_$applicationsName.txt if exists
+rm power_for_$applicationsName.txt
 
 ###############################################################################################################################################
 ##						CREATING LOG FILES									     ##
 ###############################################################################################################################################
 #Creating new Directory for the log files
 powerAPILogDirDate="$(date -u | sed -e 's/ /_/g')" 
-powerAPILogDirName=$logs/"PowerAPI_ALL_LOG_FILES_"$powerAPILogDirDate"_application_"$applicationsName"_arguments_"$otherCommandLineArguments
+powerAPILogDirName=$logsPath/"PowerAPI_ALL_LOG_FILES_"$powerAPILogDirDate"_application_"$applicationsName"_arguments_"$otherCommandLineArguments
 powerAPILogDirCreate="$(mkdir -p $powerAPILogDirName)"
 eval=$powerAPILogDirCreate
 echo "Log Directory $powerAPILogDirName is created"
@@ -89,15 +94,26 @@ pgrep java | awk '{print $NF}'
 function callPowerAPI {
 duration="$1"
 PID="$2"
-./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $PID --agg max --console duration $duration >> power_for_$applicationsName.txt
+./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $PID --agg max --console duration $duration > power_for_$applicationsName.txt
 }
 
 function callPlotRealTimeGraphs {
-while pgrep -x java > /dev/null ;
-do
-	sleep 1;
-        tail -1  power_for_$applicationsName.txt; 
-done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
+if [ $comparing -eq 0 ];
+then
+	echo "Now I am correct"
+	while ps -p $1 > /dev/null ;
+	do
+		sleep 1;
+        	tail -1  power_for_$applicationsName.txt; 
+		done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
+else
+	#If even one is running
+	while  ps -p $1 > /dev/null && ps -p $2 > /dev/null  ;
+	do
+		echo "Still running $1 and $2 "
+		sleep 1;
+	done 
+fi
 }
 
 function callAppropriateLanguage {
@@ -109,10 +125,28 @@ function callAppropriateLanguage {
 ###############################################################################################################################################
 ##						CALLING FUNCTIONS									     ##
 ###############################################################################################################################################
-eval=$(java -jar $applicationPath $arguments) &
-callPowerAPI $duration $(getProcessID)&
-callPlotRealTimeGraphs   
-wait $(jobs -p)
+
+#Check if comparing argument is given
+if [ $comparing -eq 0 ];
+then
+	java -jar $applicationPath $arguments &
+	#Get PID of the above command
+	pid=$!
+	echo "Process id is $pid"
+	callPowerAPI $duration $pid &
+	callPlotRealTimeGraphs $pid 
+	wait $(jobs -p)
+else
+	java -jar $applicationPath $arguments &	
+	pid_1=$!
+	callPowerAPI $duration $pid &
+	java -jar $comparing $arguments &
+	pid_2=$!
+	callPowerAPI $duration $pid &
+	callPlotRealTimeGraphs $pid_1 $pid_2
+	wait $(jobs -p)
+fi
+
 echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 ###############################################################################################################################################
 
