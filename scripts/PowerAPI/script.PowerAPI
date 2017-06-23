@@ -94,26 +94,16 @@ pgrep java | awk '{print $NF}'
 function callPowerAPI {
 duration="$1"
 PID="$2"
-./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $PID --agg max --console duration $duration > power_for_$applicationsName.txt
+./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $PID --agg max --console duration $duration > power_for_$applicationsName$2.txt
 }
 
 function callPlotRealTimeGraphs {
-if [ $comparing -eq 0 ];
-then
-	echo "Now I am correct"
-	while ps -p $1 > /dev/null ;
-	do
-		sleep 1;
-        	tail -1  power_for_$applicationsName.txt; 
-		done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
-else
 	#If even one is running
-	while  ps -p $1 > /dev/null && ps -p $2 > /dev/null  ;
+	while  ps -p $1 > /dev/null ;
 	do
-		echo "Still running $1 and $2 "
 		sleep 1;
-	done 
-fi
+        	tail -1  power_for_$applicationsName$1.txt; 
+		done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit 
 }
 
 function callAppropriateLanguage {
@@ -127,6 +117,9 @@ function callAppropriateLanguage {
 ###############################################################################################################################################
 
 #Check if comparing argument is given
+pid=0
+pid_1=0
+pid_2=0
 if [ $comparing -eq 0 ];
 then
 	java -jar $applicationPath $arguments &
@@ -134,16 +127,17 @@ then
 	pid=$!
 	echo "Process id is $pid"
 	callPowerAPI $duration $pid &
-	callPlotRealTimeGraphs $pid 
+	callPlotRealTimeGraphs $pid &
 	wait $(jobs -p)
 else
 	java -jar $applicationPath $arguments &	
 	pid_1=$!
-	callPowerAPI $duration $pid &
 	java -jar $comparing $arguments &
 	pid_2=$!
-	callPowerAPI $duration $pid &
-	callPlotRealTimeGraphs $pid_1 $pid_2
+	callPowerAPI $duration $pid_1 &
+	callPowerAPI $duration $pid_2 &
+	callPlotRealTimeGraphs $pid_1 &
+	callPlotRealTimeGraphs $pid_2 &
 	wait $(jobs -p)
 fi
 
@@ -151,8 +145,13 @@ echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 ###############################################################################################################################################
 
 #Move all the collected results in the proper file
-mv power_for_$applicationsName.txt $powerAPILogDirName
-
+if [ $comparing -eq 0 ];
+then
+	mv power_for_$applicationsName$pid.txt $powerAPILogDirName
+else
+	mv power_for_$applicationsName$pid_1.txt $powerAPILogDirName
+	mv power_for_$applicationsName$pid_2.txt $powerAPILogDirName
+fi
 echo "Exiting..."
 
 exit
