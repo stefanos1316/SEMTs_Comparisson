@@ -67,7 +67,7 @@ otherCommandLineArguments=$(echo $arguments | tr ' ' '_')
 #Drive to power-cli directory
 cd ../../powerapi-cli/bin/
 #Remove power_for_$applicationsName.txt if exists
-rm power_for_$applicationsName*.txt
+rm power_for_$applicationsName.txt
 
 ###############################################################################################################################################
 ##						CREATING LOG FILES									     ##
@@ -91,23 +91,16 @@ pgrep java | awk '{print $NF}'
 function callPowerAPI {
 duration="$1"
 PID="$2"
-./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $PID --agg max --console duration $duration >> power_for_$applicationsName$2.txt
+./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $PID --agg max --console duration $duration > power_for_$applicationsName$2.txt
 }
 
 function callPlotRealTimeGraphs {
 	#If even one is running
-	while  ps -p $1 > /dev/null && ps -p $2 > /dev/null ;
+	while  ps -p $1 > /dev/null ;
 	do
 		sleep 1;
-        	result_1=$(tail -1  power_for_$applicationsName$1.txt | awk -F "=" '{print $NF}' | awk -F ";" '{print $1}');
-        	result_2=$(tail -1  power_for_$applicationsName$2.txt | awk -F "=" '{print $NF}' | awk -F ";" '{print $1}');
-		echo "$result_1	$result_2"
-	done |  feedGnuplot --lines --stream --title "Comparing Power Consumption of PID$1 and PID:$2" --legend 0 "PID:$1" --legend 1 "PID:$2" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit 
-
-	#done | awk -F "=" '{for(i=1; i<=2; i++) if(i==1) first_process=$4; if(i==2) second_process=$4; print first_process, second_process; fflush();}'
-# | feedGnuplot --lines --stream --title "Comparing Power Consumption of PID$1 and PID:$2" --legend 0 "PID:$1" --legend 1 "PID:$2" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit 
-		
-#done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption, PID: $1" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit 
+        	tail -1  power_for_$applicationsName$1.txt; 
+		done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption, PID: $1" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit 
 }
 ###############################################################################################################################################
 
@@ -135,8 +128,8 @@ else
 	pid_2=$!
 	callPowerAPI $duration $pid_1 &
 	callPowerAPI $duration $pid_2 &
-	callPlotRealTimeGraphs $pid_1 $pid_2 &
-	#callPlotRealTimeGraphs $pid_2 &
+	callPlotRealTimeGraphs $pid_1 &
+	callPlotRealTimeGraphs $pid_2 &
 	wait $(jobs -p)
 fi
 
