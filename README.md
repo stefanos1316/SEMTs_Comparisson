@@ -12,6 +12,12 @@ For cloning this repository you should use the receursive command since it inclu
 
 $ git clone --recursive https://github.com/stefanos1316/SEMTs_Comparisson.git
 
+In case you used simple clone command, add the submdodules using the following commands inside the cloned repo.
+
+$ git submodule init
+
+$ git submodule update
+
 # Tested on
 
 * Fedora 24, 25
