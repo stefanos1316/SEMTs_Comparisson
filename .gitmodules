@@ -22,3 +22,6 @@
 [submodule "applications/ojAlgo"]
 	path = applications/ojAlgo
 	url = https://github.com/optimatika/ojAlgo.git
+[submodule "watts-up"]
+	path = watts-up
+	url = https://github.com/pyrovski/watts-up.git
