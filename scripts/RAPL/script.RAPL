@@ -34,7 +34,7 @@ do
 	sleep 1;
         tail -2  resultsFromRAPL_Plot.txt; 
 #done | awk '{sum+=$2; sum2+=$3; sum3+=$4; sum4+=$5; sum5+=$6} END {print sum, sum2, sum3, sum4, sum5; fflush()}' | feedGnuplot --lines --stream --title "System's Power Consumption -- via RAPL" --legend 0 "Package0" --legend 1 "CPU" --legend 2 "GPU" --legend 3 "DRAM" --legend 4 "Psys" --xlen 10 --ylabel "Power (Watts)" --xlabel "Time (seconds)" --exit
-done | awk '{for(i=1;i<=2;i++) a+=$2; b+=$3; c+=$4; d+=$5; e+=$6;  print a, b, c, d, e; a=0; b=0; c=0; d=0; e=0; fflush()}' | feedGnuplot --lines --stream --title "System's Power Consumption -- via RAPL" --legend 0 "Package0" --legend 1 "CPU" --legend 2 "GPU" --legend 3 "DRAM" --legend 4 "Psys" --xlen 10 --ylabel "Power (Watts)" --xlabel "Time (seconds)" --exit
+done | awk '{for(i=1;i<=2;i++) a+=$2; b+=$3; c+=$4; d+=$5; e+=$6; total+=((a+b+c+d+e));  print total, a, b, c, d, e; a=0; b=0; c=0; d=0; e=0; total=0; fflush()}' | feedGnuplot --lines --stream --title "System's Power Consumption -- via RAPL" --legend 0 "Total" --legend 1 "Package0" --legend 2 "CPU" --legend 3 "GPU" --legend 4 "DRAM" --legend 5 "Psys" --xlen 10 --ylabel "Power (Watts)" --xlabel "Time (seconds)" --exit
 
 }
 

@@ -1,0 +1,62 @@
+#!/bin/bash
+
+#This script makes use of Watts Up Pro power analyzer and combined with feedGnuplot provides real-time graphs.
+#NOTE: In order to run this script the Watts Up Pro has to be connected to ttyUSB0 port.
+
+#Command line arguments
+#Makes use of wattsUp Pros
+
+ROOT_UID=0
+
+if [ "$UID" -ne "$ROOT_UID"  ]; then
+	echo ""
+	echo "Error: Run this script as Root since the ttyUSB0 port requires it!"
+	echo ""
+	exit
+fi
+
+
+if [ "$1" == "--help" ]; then
+	./../../watts-up/wattsup --help
+	exit
+fi
+
+if [ "$#" -eq "0" ]; then
+	echo "Illegal number of command line arguments."
+	echo "Please use --help option or try again."
+	exit
+fi
+
+#########################################################################################################
+##						FUNCTIONS					       ##
+#########################################################################################################
+
+function plotGraphs {
+	
+	#While the watts up utility is running plot graphs, otherwise, stop
+	while  ps -p $1 > /dev/null ;
+        do
+                sleep 1;
+                tail -1  $2
+                done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption, PID: $1" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
+}
+
+#########################################################################################################
+
+#In case everything works fine, start collecting the measurements from Watts Up Pro meters 
+#using the given options
+
+rm wattsUpLogFile.txt
+
+timeStamp=$(date -u | sed -e 's/ /_/g')
+./../../watts-up/wattsup $@ >> $timeStamp_wattsUpLogFile.txt &
+wattsUpPID=$!
+
+#Now read the file and plot the graph having a single results? or maybe we can also add the volt and 
+#current.
+plotGraphs $wattsUpPID $timeStamp_wattsUpLogFile.txt
+
+#while the process is dead mv files 
+mv $timeStamp_wattsUpLogFile.txt ../../results/wattsup/
+
+exit
