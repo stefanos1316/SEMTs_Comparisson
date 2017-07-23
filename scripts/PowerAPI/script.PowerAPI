@@ -6,14 +6,16 @@
 ##						CHECKING COMMAND LINE ARGUMENTS								     ##
 ###############################################################################################################################################
 if [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ] || [ "$1" == "--h" ]; then
-	echo "--arguments     If luanching a new application and arguments are needed (enclose all"
-	echo "	        arguments in double quotes \" and separate with spaces)"
+	echo "--arguments     For more that one arguments (for an applications) use double quotes to "
+	echo "	        at the begging and the ending and separate with spaces"
 	echo "--application	Full path where the application's source code is found"
-	echo "--duration      Durations time for monitoring a process"
+	echo "--duration      Durations time for monitoring a process, if not set then the duration will"
+	echo "		equal to the application's execution time"
 	echo "--logs		Full path where all the log files form the monitoring process are stored"
 	echo "--process	Provide the PID of a running process"
 	echo "--comparing	Add the full path of a different implementation of the same application"
-	echo "		in order to compare them"
+	echo "		in order to compare them, command line agruments for this program must are used from"
+	echo "		the --arguments option."
 	exit
 fi
 
@@ -29,12 +31,12 @@ args=("$@")
 ELEMENTS=${#args[@]} 
 
 #Initiallize parameters
-arguments=0
-applicationPath=0
-duration=0
-logsPath=0
-processID=0
-comparing=0
+arguments="0"
+applicationPath="0"
+duration="0"
+logsPath="0"
+processID="0"
+comparing="0"
 
 # echo each element in array  
 # for lQsds
@@ -50,8 +52,14 @@ for (( i=0;i<$ELEMENTS;++i)); do
 	esac
 done
 
+#If duration is 0 then add a large number by default and by the end of the appliation's execution it will be terminated
+if [ "$duration" == "0" ]; then
+	#adding number close to 24 hours 
+	duration=86400
+fi
+
 #Second validation of parameters
-if [ "$applicationPath" == "0" ] && [ "$process" == "0" ];
+if [ "$applicationPath" ==  "0" ] && [ "$processID" == "0" ];
 #Which means user gave both application and process
 then
 	echo "Error: Provide only application's source code or process ID to monitor"
@@ -91,7 +99,16 @@ pgrep java | awk '{print $NF}'
 function callPowerAPI {
 duration="$1"
 PID="$2"
-./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $PID --agg max --console duration $duration >> power_for_$applicationsName$2.txt
+./powerapi modules procfs-cpu-simple monitor --frequency 1000 --pids $PID --agg max --console duration $duration >> power_for_$applicationsName$2.txt & 
+POWER_API=$!
+
+while ps -p $2 > /dev/null; 
+do
+	sleep 1
+done
+
+kill -9 $POWER_API
+
 }
 
 function callPlotRealTimeGraphs {
@@ -123,7 +140,7 @@ fi
 pid=0
 pid_1=0
 pid_2=0
-if [ $comparing -eq 0 ];
+if [ "$comparing" == "0" ];
 then
 	java -jar $applicationPath $arguments &
 	#Get PID of the above command
@@ -147,7 +164,7 @@ echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 ###############################################################################################################################################
 
 #Move all the collected results in the proper file
-if [ $comparing -eq 0 ];
+if [ "$comparing" == "0" ];
 then
 	mv power_for_$applicationsName$pid.txt $powerAPILogDirName
 else

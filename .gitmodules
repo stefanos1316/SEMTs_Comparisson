@@ -25,3 +25,6 @@
 [submodule "watts-up"]
 	path = watts-up
 	url = https://github.com/pyrovski/watts-up.git
+[submodule "powerapi"]
+	path = powerapi
+	url = https://github.com/Spirals-Team/powerapi.git

@@ -2,10 +2,18 @@
 
 #This script makes use of perf, a Linux profiling with performance counters
 
+#This script runs only as Root
+ROOT_UID=0
+
+if [ "$UID" -ne "$ROOT_UID" ]; then
+	echo "Error: In order to run perf command run as root."
+	exit
+fi
+
 rm -rf perf_results.txt
 
 function retrieveResults {
-perf stat -a -e power/energy-cores/ -e power/energy-gpu/ -e power/energy-pkg/ -e power/energy-psys/ -e power/energy-ram/ -I 1000 | awk 'BEGIN { ORS = "	" } { print }'
+perf stat -a -e power/energy-cores/ -e power/energy-gpu/ -e power/energy-pkg/ -e power/energy-psys/ -e power/energy-ram/ -I 1000 | awk 'BEGIN { ORS = "	" } { print }' >> perf_results.txt
 }
 
 function plotGraph {

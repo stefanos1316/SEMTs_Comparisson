@@ -2,6 +2,12 @@
 
 #This script will install all the contained tools in this directory.
 
+if [ "$UID" -ne "0" ]; then
+	echo "Error: Please run as root since msr modules requires it"
+	exit
+fi
+
+
 echo ""
 echo "====================="
 echo "|Installing jRAPL...|"
@@ -34,6 +40,12 @@ cd ../../../scripts/SetUpPlatform
 
 echo ""
 echo "======================="
+echo "|Installing PowerAPI...|"
+echo "======================="
+echo ""
+
+echo ""
+echo "======================="
 echo "|Installing WattsUp...|"
 echo "======================="
 echo ""
@@ -42,4 +54,11 @@ make
 cd ../scripts/SetUpPlatform
 
 echo "Done with all installations."
+
+echo "Enabling msr modules for jRAPL..."
+
+
+modprobe msr
+
+"Applications console can be initallized as ..."
 exit
