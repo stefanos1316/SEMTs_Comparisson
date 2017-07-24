@@ -8,12 +8,12 @@
 
 ROOT_UID=0
 
-if [ "$UID" -ne "$ROOT_UID"  ]; then
-	echo ""
-	echo "Error: Run this script as Root since the ttyUSB0 port requires it!"
-	echo ""
-	exit
-fi
+#if [ "$UID" -ne "$ROOT_UID"  ]; then
+#	echo ""
+#	echo "Error: Run this script as Root since the ttyUSB0 port requires it!"
+#	echo ""
+#	exit
+#fi
 
 
 if [ "$1" == "--help" ]; then
@@ -38,7 +38,7 @@ function plotGraphs {
         do
                 sleep 1;
                 tail -1  $2
-                done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption, PID: $1" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
+                done | awk -F "," '{print $1; fflush()}'| feedGnuplot --lines --stream --title "Monioting System's Total Power Consumption using Watts Up Pro" --legend 0 "System's Power Consumption"  --xlen 20 --ylabel 'Power Consumption (watts)' --xlabel 'Time (seconds)' --exit
 }
 
 #########################################################################################################
@@ -49,14 +49,14 @@ function plotGraphs {
 rm wattsUpLogFile.txt
 
 timeStamp=$(date -u | sed -e 's/ /_/g')
-./../../watts-up/wattsup $@ >> $timeStamp_wattsUpLogFile.txt &
+exec sudo ./../../watts-up/wattsup $@ >> wattsUpLogFile.txt &
 wattsUpPID=$!
 
 #Now read the file and plot the graph having a single results? or maybe we can also add the volt and 
 #current.
-plotGraphs $wattsUpPID $timeStamp_wattsUpLogFile.txt
+plotGraphs $wattsUpPID wattsUpLogFile.txt
 
 #while the process is dead mv files 
-mv $timeStamp_wattsUpLogFile.txt ../../results/wattsup/
+#mv wattsUpLogFile.txt ../../results/wattsup/
 
 exit
