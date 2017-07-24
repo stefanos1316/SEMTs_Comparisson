@@ -25,6 +25,6 @@ $ git submodule update
 
 # Using the Platform
 
-In order to install all the tools and to perform the necessary changes for system configurations, we developed the [SetUpPlatform] (https://github.com/stefanos1316/SEMTs_Comparisson/tree/master/scripts/SetUpPlatform) scripts. Initially, run the **script.CleanAllDirectories**, then execute the **script.InstallAllTools** (using sudo since is required to enable some modules) to install all the tools, and, finally, run the **script.Disable_P_State** (Jalen and Jolinar are using old kernel modules, thus, is necessary to disable P_state).
+In order to install all the tools and to perform the necessary changes for system configurations, we developed the [SetUpPlatform](https://github.com/stefanos1316/SEMTs_Comparisson/tree/master/scripts/SetUpPlatform) scripts. Initially, run the **script.CleanAllDirectories**, then execute the **script.InstallAllTools** (using sudo since is required to enable some modules) to install all the tools, and, finally, run the **script.Disable_P_State** (Jalen and Jolinar are using old kernel modules, thus, is necessary to disable P_state).
   
 If all scripts executed corrently, try using the tools by running the scripts.
