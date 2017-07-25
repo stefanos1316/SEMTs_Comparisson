@@ -119,7 +119,7 @@ then
         do
                 sleep 1;
                 tail -1  power_for_$applicationsName$1.txt;
-                done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption, PID: $1" --legend 0 "CPU" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
+                done | awk -F "=" '{print $NF; fflush()}'| feedGnuplot --lines --stream --title "Monioting of $applicationsName Power Consumption, PID: $1" --legend 0 "CPU" --xlen 20 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
 else
 	while  ps -p $1 > /dev/null && ps -p $2 > /dev/null ;
 	do
@@ -127,8 +127,36 @@ else
         	result_1=$(tail -1  power_for_$applicationsName$1.txt | awk -F "=" '{print $NF}' | awk -F ";" '{print $1}');
         	result_2=$(tail -1  power_for_$applicationsName$2.txt | awk -F "=" '{print $NF}' | awk -F ";" '{print $1}');
 		echo "$result_1	$result_2"
-	done |  feedGnuplot --lines --stream --title "Comparing Power Consumption of PID$1 and PID:$2" --legend 0 "PID:$1" --legend 1 "PID:$2" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit 
+	done |  feedGnuplot --lines --stream --title "Comparing Power Consumption of PID$1 and PID:$2" --legend 0 "PID:$1" --legend 1 "PID:$2" --xlen 20 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit 
 fi
+}
+
+#This functions get resource usage such as CPU and MEM of a process and stores them in file
+function getResourceUsage {
+	pid_1=$1
+	if [ "$#" -eq "1" ]; then 
+		while ps -p $1 > /dev/null;
+		do
+			sleep 1
+			currentTimeStamp=$(date -u | sed -e 's/ /_/g')
+			currentResource=$(ps -p $pid_1 -o %cpu,%mem | tail -1)
+			echo $currentTimeStamp" "$currentResource >> resourceUsage_$pid_1.txt
+		done	
+	else
+		pid_2=$2
+		while ps -p $pid_1 > /dev/null && ps -p $pid_2 > /dev/null;
+		do
+			sleep 1
+			currentTimeStamp=$(date -u | sed -e 's/ /_/g')
+			currentResource1=$(ps -p $pid_1 -o %cpu,%mem | tail -1)
+			currentResource2=$(ps -p $pid_2 -o %cpu,%mem | tail -1)
+			echo $currentTimeStamp" "$currentResource1 >> resourceUsage_$pid_1.txt
+			echo $currentTimeStamp" "$currentResource2 >> resourceUsage_$pid_2.txt
+		done
+	fi
+
+	#In case %CPU %MEM is stored as the last line in both files the remote lines
+	sed -i '''/%CPU %MEM/d' resourceUsage_*
 }
 ###############################################################################################################################################
 
@@ -145,7 +173,7 @@ then
 	java -jar $applicationPath $arguments &
 	#Get PID of the above command
 	pid=$!
-	echo "Process id is $pid"
+	getResourceUsage $pid &
 	callPowerAPI $duration $pid &
 	callPlotRealTimeGraphs $pid &
 	wait $(jobs -p)
@@ -154,6 +182,7 @@ else
 	pid_1=$!
 	java -jar $comparing $arguments &
 	pid_2=$!
+	getResourceUsage $pid_1 $pid_2 &
 	callPowerAPI $duration $pid_1 &
 	callPowerAPI $duration $pid_2 &
 	callPlotRealTimeGraphs $pid_1 $pid_2 &
@@ -166,10 +195,14 @@ echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 #Move all the collected results in the proper file
 if [ "$comparing" == "0" ];
 then
+	echo "Comparing is 0 and PID is $pid"
 	mv power_for_$applicationsName$pid.txt $powerAPILogDirName
+	mv resourceUsage_$pid.txt $powerAPILogDirName
 else
 	mv power_for_$applicationsName$pid_1.txt $powerAPILogDirName
 	mv power_for_$applicationsName$pid_2.txt $powerAPILogDirName
+	mv resourceUsage_$pid_1.txt $powerAPILogDirName
+	mv resourceUsage_$pid_2.txt $powerAPILogDirName
 fi
 echo "Exiting..."
 

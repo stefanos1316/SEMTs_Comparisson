@@ -49,6 +49,9 @@ function plotGraphs {
 rm wattsUpLogFile.txt
 
 timeStamp=$(date -u | sed -e 's/ /_/g')
+
+echo ""
+echo "Watts Up Pro utility makes use of ttyUSB0, thus, sudo access is required..."
 exec sudo ./../../watts-up/wattsup $@ >> wattsUpLogFile.txt &
 wattsUpPID=$!
 

@@ -62,7 +62,7 @@ while true;
 do
 	sleep 1;
 	tail -2 *-power.csv;
-done | awk -F ";" '{for(i=1;i<=2;i++) a+=$1; b+=$2; c+=$3; print a, b, c; a=0; b=0; c=0; fflush()}' | feedGnuplot --lines --stream --title "$1 Power Consumption -- via Jolinar" --legend 0 "CPU" --legend 1 "Hard Disk" --legend 2 "Memory" --xlen 10 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
+done | awk -F ";" '{for(i=1;i<=2;i++) a+=$1; b+=$2; c+=$3; print a, b, c; a=0; b=0; c=0; fflush()}' | feedGnuplot --lines --stream --title "$1 Power Consumption -- via Jolinar" --legend 0 "CPU" --legend 1 "Hard Disk" --legend 2 "Memory" --xlen 20 --ylabel 'Power (Watts)' --xlabel 'Time (seconds)' --exit
 }
 
 #######################################################################################
