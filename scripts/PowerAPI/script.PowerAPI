@@ -170,18 +170,26 @@ pid_1=0
 pid_2=0
 if [ "$comparing" == "0" ];
 then
-	java -jar $applicationPath $arguments &
-	#Get PID of the above command
-	pid=$!
+	#time command added in order to get more data such as memory usage, page fault, and context switching
+	/usr/bin/time -v java -jar $applicationPath $arguments 2>timeCommandData.txt &
+        #Since our applications, now, is the child process of time, we have to extract it using the following lines
+	aoutpid=$(pgrep -P $!)
+	pid=$(ps -o pid w -p $aoutpid | tail -1)
+
+	#Passing the process id
 	getResourceUsage $pid &
 	callPowerAPI $duration $pid &
 	callPlotRealTimeGraphs $pid &
 	wait $(jobs -p)
 else
-	java -jar $applicationPath $arguments &	
-	pid_1=$!
-	java -jar $comparing $arguments &
-	pid_2=$!
+	/usr/bin/time -v java -jar $applicationPath $arguments 2>timeCommandData_1.txt &	
+	timePID_1=$(pgrep -P $!)
+	pid_1=$(ps -o pid w -p $timePID_1 | tail -1)
+
+	/usr/bin/time -v java -jar $comparing $arguments 2>timeCommandData_2.txt &
+	timePID_2=$(pgrep -P $!)
+	pid_2=$(ps -o pid w -p $timePID_2 | tail -1)
+	
 	getResourceUsage $pid_1 $pid_2 &
 	callPowerAPI $duration $pid_1 &
 	callPowerAPI $duration $pid_2 &
@@ -190,6 +198,9 @@ else
 fi
 
 echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
+
+###############################################################################################################################################
+#				MOVING FILES IN THE RESULTS FOLDER									      #
 ###############################################################################################################################################
 
 #Move all the collected results in the proper file
@@ -198,11 +209,14 @@ then
 	echo "Comparing is 0 and PID is $pid"
 	mv power_for_$applicationsName$pid.txt $powerAPILogDirName
 	mv resourceUsage_$pid.txt $powerAPILogDirName
+	mv timeCommandData.txt $powerAPILogDirName/timeCommandData_$pid.txt
 else
 	mv power_for_$applicationsName$pid_1.txt $powerAPILogDirName
 	mv power_for_$applicationsName$pid_2.txt $powerAPILogDirName
 	mv resourceUsage_$pid_1.txt $powerAPILogDirName
 	mv resourceUsage_$pid_2.txt $powerAPILogDirName
+	mv timeCommandData_1.txt $powerAPILogDirName/timeCommand_$pid_1.txt
+	mv timeCommandData_2.txt $powerAPILogDirName/timeCommand_$pid_2.txt
 fi
 echo "Exiting..."
 
