@@ -27,4 +27,5 @@ stored in the log files of each tool (results/ToolName)
 
 <p align="center">
   <img src="../img/sinlge_task.png"  />
+  <td class="caption">Single task execution</td>
 </p>
