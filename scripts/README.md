@@ -21,3 +21,10 @@ Get more information about command line arguments through the -h or -help comman
 # Optional Information
 It is suggested for the user to store the log files and results (command line argument --logs) in the results directory found under the SEMTs_Comparisson repository.
 
+# Results Illustration
+An additional feature that wrappers these script is the real-time plotingt of graphs--is done with the use of feedGnuplot--and the resource usage files which are 
+stored in the log files of each tool (results/ToolName)
+
+<p align="center">
+  <img src="../img/single_task.png"  />
+</p>

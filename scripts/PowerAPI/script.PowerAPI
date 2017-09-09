@@ -206,18 +206,35 @@ echo "Done exeuting script all resutls can be found in $powerAPILogDirName"
 #Move all the collected results in the proper file
 if [ "$comparing" == "0" ];
 then
-	echo "Comparing is 0 and PID is $pid"
-	mv power_for_$applicationsName$pid.txt $powerAPILogDirName
-	mv resourceUsage_$pid.txt $powerAPILogDirName
-	mv timeCommandData.txt $powerAPILogDirName/timeCommandData_$pid.txt
+	power="power_for_$applicationsName$pid.txt"
+	resource="resourceUsage_$pid.txt"
+	mv ${power//[[:blank:]]/} $powerAPILogDirName
+	mv ${resource//[[:blank:]]/} $powerAPILogDirName
+	mv timeCommandData.txt $powerAPILogDirName
+	echo ""
+	echo "COLLECTED STATS..."
+	echo ""
+	totalPowerConsumption=$( cat $powerAPILogDirName/${power//[[:blank:]]/} | awk -F "=" '{ sum+=$6 } END { print sum }') 
+	totalCPUusage=$( cat $powerAPILogDirName/${resource//[[:blank:]]/} | awk '{ sum += $2 } END { print sum }'  )
+	finalCPU=$(echo $totalCPUusage | awk -F "." '{print $1}')
+	numberOfRecords=$( cat $powerAPILogDirName/${resource//[[:blank:]]/} | wc -l)
+	averageCPUusage=$(echo $((finalCPU/numberOfRecords)))
+	echo "Total Power Consumption: "$totalPowerConsumption
+	echo "Average CPU usage: "$averageCPUusage
+
 else
 	mv power_for_$applicationsName$pid_1.txt $powerAPILogDirName
 	mv power_for_$applicationsName$pid_2.txt $powerAPILogDirName
 	mv resourceUsage_$pid_1.txt $powerAPILogDirName
 	mv resourceUsage_$pid_2.txt $powerAPILogDirName
-	mv timeCommandData_1.txt $powerAPILogDirName/timeCommand_$pid_1.txt
-	mv timeCommandData_2.txt $powerAPILogDirName/timeCommand_$pid_2.txt
+	mv timeCommandData_1.txt $powerAPILogDirName
+	mv timeCommandData_2.txt $powerAPILogDirName
 fi
+
+
+
 echo "Exiting..."
 
 exit
+
+

@@ -1,0 +1,7 @@
+muid=fccea27a-e04f-471f-b93d-f82ffefe8896;timestamp=1504983606538;target=17439;devices=cpu;power=0.0
+muid=fccea27a-e04f-471f-b93d-f82ffefe8896;timestamp=1504983607546;target=17439;devices=cpu;power=4.249999999999999
+muid=fccea27a-e04f-471f-b93d-f82ffefe8896;timestamp=1504983608545;target=17439;devices=cpu;power=3.9175126903553292
+muid=fccea27a-e04f-471f-b93d-f82ffefe8896;timestamp=1504983609546;target=17439;devices=cpu;power=4.6543535620052765
+muid=fccea27a-e04f-471f-b93d-f82ffefe8896;timestamp=1504983610546;target=17439;devices=cpu;power=4.71259842519685
+muid=fccea27a-e04f-471f-b93d-f82ffefe8896;timestamp=1504983611546;target=17439;devices=cpu;power=4.265624999999999
+muid=fccea27a-e04f-471f-b93d-f82ffefe8896;timestamp=1504983612546;target=17439;devices=cpu;power=4.807894736842105
