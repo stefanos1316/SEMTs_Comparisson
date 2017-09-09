@@ -31,7 +31,7 @@ stored in the log files of each tool (results/ToolName)
 <tr><td class="caption">Single task execution</td></tr>
 </table>
 <table class="image">
-<tr><td> <img src="../img/Comparing_tasks.png"  /></td></tr>
+<tr><td> <img src="../img/comparing_tasks.png"  /></td></tr>
 <tr><td class="caption">Comparing tasks execution</td></tr>
 </table>
 </p>
