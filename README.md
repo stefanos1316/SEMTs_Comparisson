@@ -14,13 +14,13 @@ For more information or questions you can contact with me at <sgeorgiou@aueb.gr>
 # Cloning
 For cloning this repository you should use the receursive command since it includes submodules
 
-   $ git clone --recursive https://github.com/stefanos1316/SEMTs_Comparisson.git
+      $ git clone --recursive https://github.com/stefanos1316/SEMTs_Comparisson.git
 
 In case you used simple clone command, add the submdodules using the following commands inside the cloned repo.
 
-   $ git submodule init
+      $ git submodule init
 
-   $ git submodule update
+      $ git submodule update
 
 # Tested on
 
