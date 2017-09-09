@@ -28,10 +28,10 @@ stored in the log files of each tool (results/ToolName)
 <p align="center">
 <table class="image">
 <tr><td> <img src="../img/sinlge_task.png"  /></td></tr>
-<tr><td class="caption">Single task execution</td></tr>
+<tr><td class="caption" align="center" >Single task execution</td></tr>
 </table>
 <table class="image">
 <tr><td> <img src="../img/comparing_tasks.png"  /></td></tr>
-<tr><td class="caption">Comparing tasks execution</td></tr>
+<tr><td class="caption" align="center" >Comparing tasks execution</td></tr>
 </table>
 </p>
