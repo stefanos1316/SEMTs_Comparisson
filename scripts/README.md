@@ -3,7 +3,7 @@
 
 -maven (tested on version 3)
 
--[feedGnuplot](http://search.cpan.org/~dkogan/feedgnuplot-1.42/bin/feedgnuplot)
+-[feedGnuplot](http://search.cpan.org/~dkogan/feedgnuplot-1.42/bin/feedgnuplot) (tested on version 1.42)
 
 # Platform's set-up
 Before testing any applications execute the script Disable_P_State if the systems kernel version is higher than 3.10 (use uname -r to find it)
