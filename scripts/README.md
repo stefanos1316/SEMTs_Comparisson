@@ -25,13 +25,13 @@ It is suggested for the user to store the log files and results (command line ar
 An additional feature that wrappers these script is the real-time plotingt of graphs--is done with the use of feedGnuplot--and the resource usage files which are 
 stored in the log files of each tool (results/ToolName)
 
-
-  <img src="../img/sinlge_task.png"  />
-  <tr><td class="caption">Single task execution</td></tr>
-
 <p align="center">
 <table class="image">
 <tr><td> <img src="../img/sinlge_task.png"  /></td></tr>
-<tr><td class="caption">caption text</td></tr>
+<tr><td class="caption">Single task execution</td></tr>
+</table>
+<table class="image">
+<tr><td> <img src="../img/Comparing_tasks.png"  /></td></tr>
+<tr><td class="caption">Comparing tasks execution</td></tr>
 </table>
 </p>
