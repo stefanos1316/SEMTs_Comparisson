@@ -26,5 +26,5 @@ An additional feature that wrappers these script is the real-time plotingt of gr
 stored in the log files of each tool (results/ToolName)
 
 <p align="center">
-  <img src="../img/single_task.png"  />
+  <img src="../img/sinlge_task.png"  />
 </p>
