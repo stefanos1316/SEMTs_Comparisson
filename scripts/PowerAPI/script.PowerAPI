@@ -223,12 +223,42 @@ then
 	echo "Average CPU usage: "$averageCPUusage
 
 else
-	mv power_for_$applicationsName$pid_1.txt $powerAPILogDirName
-	mv power_for_$applicationsName$pid_2.txt $powerAPILogDirName
-	mv resourceUsage_$pid_1.txt $powerAPILogDirName
-	mv resourceUsage_$pid_2.txt $powerAPILogDirName
+	power1="power_for_$applicationsName$pid_1.txt"
+	resource1="resourceUsage_$pid_1.txt"
+	power2="power_for_$applicationsName$pid_2.txt"
+	resource2="resourceUsage_$pid_2.txt"
+	mv ${power1//[[:blank:]]/} $powerAPILogDirName
+	mv ${power2//[[:blank:]]/}  $powerAPILogDirName
+	mv ${resource1//[[:blank:]]/}  $powerAPILogDirName
+	mv ${resource2//[[:blank:]]/}  $powerAPILogDirName
 	mv timeCommandData_1.txt $powerAPILogDirName
 	mv timeCommandData_2.txt $powerAPILogDirName
+	echo ""
+	echo "COLLECTED STATS..."
+	echo ""
+	# Application 1
+	totalPowerConsumption1=$( cat $powerAPILogDirName/${power1//[[:blank:]]/} | awk -F "=" '{ sum+=$6 } END { print sum }') 
+	totalCPUusage1=$( cat $powerAPILogDirName/${resource1//[[:blank:]]/} | awk '{ sum += $2 } END { print sum }'  )
+	finalCPU1=$(echo $totalCPUusage1 | awk -F "." '{print $1}')
+	numberOfRecords1=$( cat $powerAPILogDirName/${resource1//[[:blank:]]/} | wc -l)
+	averageCPUusage1=$(echo $((finalCPU1/numberOfRecords1)))
+
+	# Application 2
+	totalPowerConsumption2=$( cat $powerAPILogDirName/${power2//[[:blank:]]/} | awk -F "=" '{ sum+=$6 } END { print sum }') 
+	totalCPUusage2=$( cat $powerAPILogDirName/${resource2//[[:blank:]]/} | awk '{ sum += $2 } END { print sum }'  )
+	finalCPU2=$(echo $totalCPUusage2 | awk -F "." '{print $1}')
+	numberOfRecords2=$( cat $powerAPILogDirName/${resource2//[[:blank:]]/} | wc -l)
+	averageCPUusage2=$(echo $((finalCPU2/numberOfRecords2)))
+
+	
+	echo "Application: "$applicationPath
+	echo "Total Power Consumption: "$totalPowerConsumption1
+	echo "Average CPU usage: "$averageCPUusage1
+	echo ""
+	echo "Application: "$comparing 
+	echo "Total Power Consumption: "$totalPowerConsumption2
+	echo "Average CPU usage: "$averageCPUusage2
+
 fi
 
 

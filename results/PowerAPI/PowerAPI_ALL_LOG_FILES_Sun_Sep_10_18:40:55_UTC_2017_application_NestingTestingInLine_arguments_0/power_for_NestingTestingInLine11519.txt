@@ -1,0 +1,14 @@
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068859520;target=11519;devices=cpu;power=0.0
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068860527;target=11519;devices=cpu;power=2.261538461538461
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068861537;target=11519;devices=cpu;power=1.413965087281795
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068862537;target=11519;devices=cpu;power=2.6249999999999996
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068863537;target=11519;devices=cpu;power=3.2390745501285343
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068864537;target=11519;devices=cpu;power=3.3923076923076922
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068865537;target=11519;devices=cpu;power=3.572164948453608
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068866537;target=11519;devices=cpu;power=3.464194373401534
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068867537;target=11519;devices=cpu;power=3.643958868894601
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068868537;target=11519;devices=cpu;power=3.2558139534883717
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068869537;target=11519;devices=cpu;power=3.383631713554987
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068870537;target=11519;devices=cpu;power=3.4909793814432986
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068871537;target=11519;devices=cpu;power=3.383631713554987
+muid=6c3687a8-ec00-4436-9117-ba33a5baafac;timestamp=1505068872537;target=11519;devices=cpu;power=0.0
