@@ -28,3 +28,6 @@
 [submodule "powerapi"]
 	path = powerapi
 	url = https://github.com/Spirals-Team/powerapi.git
+[submodule "likwid"]
+	path = likwid
+	url = https://github.com/RRZE-HPC/likwid.git
