@@ -31,3 +31,6 @@
 [submodule "likwid"]
 	path = likwid
 	url = https://github.com/RRZE-HPC/likwid.git
+[submodule "papi"]
+	path = papi
+	url = https://bitbucket.org/icl/papi.git

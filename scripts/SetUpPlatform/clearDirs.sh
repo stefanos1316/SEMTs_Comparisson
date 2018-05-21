@@ -10,5 +10,7 @@ mkdir -p ../../results/jRAPL
 mkdir -p ../../results/RAPL
 mkdir -p ../../results/wattsup
 
+
+
 echo "Done with cleaning process"
 exit

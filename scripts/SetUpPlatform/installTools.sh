@@ -8,47 +8,56 @@ if [ "$UID" -ne "0" ]; then
 fi
 
 
-echo ""
+echo
 echo "====================="
 echo "|Installing jRAPL...|"
 echo "====================="
-echo ""
+echo
 cd ../../jRAPL
 make all
 cd ../scripts/SetUpPlatform/
 
-echo ""
+echo
 echo "====================="
 echo "|Installing Jalen...|"
 echo "====================="
-echo "" 
+echo 
 cd ../../jalen/2.0/
 mvn clean install
 sh build.sh
 cd ../../scripts/SetUpPlatform
 
-echo ""
+echo
 echo "======================="
 echo "|Installing Jolinar...|"
 echo "======================="
-echo ""
+echo
 cd ../../jolinar/2.5/jolinar/
 mvn clean install 
 sh build.sh
 sh release.sh
 cd ../../../scripts/SetUpPlatform
 
-echo ""
+echo
 echo "======================="
 echo "|Installing PowerAPI...|"
 echo "======================="
-echo ""
+echo
 
-echo ""
+echo
+echo "======================"
+echo "|Installing Likwid...|"
+echo "======================"
+echo
+cd ../../likwid/
+make
+cd ../script/SetUpPlatform
+
+echo
 echo "======================="
 echo "|Installing WattsUp...|"
 echo "======================="
-echo ""
+echo
 cd ../../watts-up
 make
 cd ../scripts/SetUpPlatform

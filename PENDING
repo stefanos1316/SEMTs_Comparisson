@@ -1,0 +1,2 @@
+Customaze installTool.sh to build from CWD instead of navigating to the build directory.
+Add ruls to clean build directories.
