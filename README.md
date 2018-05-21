@@ -37,8 +37,9 @@ In case you used simple clone command, add the submdodules using the following c
 In order to install all the tools and to perform the necessary changes for system configurations, we developed the [installTools.sh](https://github.com/stefanos1316/SEMTs_Comparisson/tree/master/scripts/SetUpPlatform) scripts. 
 Initially, run the **clearDirs.sh**, then execute the **installTools.sh** (using sudo since is required to enable some modules) to install all the tools, and, finally, run the **disablePstate.sh** (Jalen and Jolinar are using old kernel modules, thus, is necessary to disable P_state).
  
-If all scripts executed corrently, try using the tools by running the scripts.
+If all scripts executed corrently, you may use the tools after installing the necessary components such as Gnuplot.
 Use -h or --help, command line arguments, to receive an informative description of the tool's features.
 
 # License
+
 
